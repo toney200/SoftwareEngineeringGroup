@@ -1,0 +1,54 @@
+
+/*
+*   Class outline for the customer functionality of the application
+*/
+public class Customer{
+
+    // Member variables
+    private String name;
+    private String address;
+    private String eircode;
+    private String phoneNo;
+    private int id;
+
+    // Constructors
+    public Customer(String name, String address, String eircode, String phoneNumber);
+    
+    // Getters & setters
+    public int getID();
+    public String getName();
+    public String getAddress();
+    public String getEircode();
+    public String getPhoneNo();
+
+    // Validate methods
+    public boolean validateName(String name);
+    public boolean validateAddress(String address);
+    public boolean validateEircode(String eircode);
+    public boolean validatePhoneNo(String phoneNo);
+    
+}
+
+public class CustomerSQLAccess{
+
+    private Connection connect = null;
+	private Statement statement = null;
+	private PreparedStatement preparedStatement = null;
+	private ResultSet resultSet = null;
+	
+	final private String host;
+	final private String user;
+	final private String password;
+
+    // Constructor
+    public CustomerSQLAccess();
+    
+    // Methods for DB interaction
+    public boolean insertCustomerDetails(Customer customerToDB);
+    public boolean updateCustomerName(int id, String name)
+    public boolean updateCustomerAddress(int id, String address);
+    public boolean updateCustomerPhone(int id, String phoneNo);
+    public boolean updateCustomerEircode(int id, String eircode);
+    public boolean deleteCustomerByID(int id);
+
+}
