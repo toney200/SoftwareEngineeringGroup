@@ -1,0 +1,43 @@
+/*
+*   Class outline for the Delivery area functionality of the application
+*/
+public class DeliveryArea{
+
+    // Member variables
+    private int deliveryAreaID
+    private String name;
+
+    // Constructors
+    public DeliveryArea(String name);
+    
+    // Getters & setters
+  
+    public String getName();
+    public String setName();
+    public int getdeliveryAreaID();
+    public int setdeliveryAreaID();
+
+    // Validate methods
+    public boolean validateName(String name); 
+}
+
+public class DeliveryAreaSQLAccess{
+
+    	private Connection connect = null;
+	private Statement statement = null;
+	private PreparedStatement preparedStatement = null;
+	private ResultSet resultSet = null;
+	
+	final private String host;
+	final private String user;
+	final private String password;
+
+    // Constructor
+    public DeliveryAreaSQLAccess();
+    
+    // Methods for DB interaction
+    public boolean insertDeliveryAreaDetails(DeliveryArea deliveryAreaToDB);
+    public boolean updateDeliveryAreaName(int id, String name)
+    public boolean deleteDeliveryAreaByID(int id);
+
+}
