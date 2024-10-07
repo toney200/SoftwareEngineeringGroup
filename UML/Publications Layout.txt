@@ -15,17 +15,19 @@ public class Publication{
 
     //Getters and Setters
     public String getName();
-    public String setName();
+    public void setName(String name);
     public String getAuthor();
-    public String setAuthor();
+    public void setAuthor(String author);
     public String getType();
-    public String setType();
+    public void setType(String type);
     public String getFrequency();
-    public String setFrequency();
+    public void setFrequency(String frequency);
     public double getCost();
-    public double setCost();
-    public int getPublicationsID();
-    public int setPublicationsID();
+    public void setCost(double cost);
+    public int getPublicationID();
+    public void setPublicationID(int publicationID);
+
+	
 
     //Validate methods
     public boolean validateName(String name);
@@ -33,6 +35,11 @@ public class Publication{
     public boolean validateType(String type);
     public boolean validateFrequency(String frequency);
     public boolean validateCost(double cost); 
+    
+    
+    
+
+	
 
 }
 
@@ -51,12 +58,12 @@ public class PublicationSQLAccess{
     public PublicationSQLAccess();
 
     //Methods for database interaction
-    public boolean insertPublicationsDetails(Publication publicationToDB);
-    public boolean updatePublicationsName(int publicationID, String name);
-    public boolean updatePublicationsType(int publicationID, String type);
-    public boolean updatePublicationsAuthor(int publicationID, String author);
-    public boolean updatePublicationsFrequency(int publicationsID,String frequency);
-    public boolean updatePublicationsCost(int publicationID, double cost);
+    public boolean insertPublicationDetails(Publication publicationToDB);
+    public boolean updatePublicationName(int publicationID, String name);
+    public boolean updatePublicationType(int publicationID, String type);
+    public boolean updatePublicationAuthor(int publicationID, String author);
+    public boolean updatePublicationFrequency(int publicationsID,String frequency);
+    public boolean updatePublicationCost(int publicationID, double cost);
     public boolean deletePublicationByID(int publicationID);
 
 
