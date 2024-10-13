@@ -5,50 +5,45 @@
 public class Customer{
 
     // Member variables
-    private String name;
+    private String firstName;
+    private String lastName;
     private String address;
     private String eircode;
     private String phoneNo;
     private int id;
 
+    private static final String EIRCODE_REGEX = "^[A-Za-z0-9]{3}[A-Za-z0-9]{4}$";
+    private static final Pattern EIRCODE_PATTERN = Pattern.compile(EIRCODE_REGEX);
+    private static final String PHONE_REGEX = "^08[3679][0-9]{7}$";
+
+
     // Constructors
-    public Customer(String name, String address, String eircode, String phoneNumber);
+    public Customer();
     
+
     // Getters & setters
     public int getID();
     public String getName();
     public String getAddress();
     public String getEircode();
     public String getPhoneNo();
+    public void setFirstName(String name);
+    public void setLastName(String name);
+    public void setPhoneNo(String phoneNumber);
+    public void setAddress(String address);
+    public void setAddress(String address);
+
 
     // Validate methods
-    public boolean validateName(String name);
-    public boolean validateAddress(String address);
-    public boolean validateEircode(String eircode);
-    public boolean validatePhoneNo(String phoneNo);
+    protected boolean validateFirstName(String firstName);
+    protected boolean validateLastName(String lastName);
+    protected boolean validateAddress(String address);
+    protected boolean validateEircode(String eircode);
+    protected boolean validatePhoneNo(String phoneNo);
+
+
+    // Deletes 
+    public void deleteCustomerByID(int id);
     
 }
 
-public class CustomerSQLAccess{
-
-    private Connection connect = null;
-	private Statement statement = null;
-	private PreparedStatement preparedStatement = null;
-	private ResultSet resultSet = null;
-	
-	final private String host;
-	final private String user;
-	final private String password;
-
-    // Constructor
-    public CustomerSQLAccess();
-    
-    // Methods for DB interaction
-    public boolean insertCustomerDetails(Customer customerToDB);
-    public boolean updateCustomerName(int id, String name)
-    public boolean updateCustomerAddress(int id, String address);
-    public boolean updateCustomerPhone(int id, String phoneNo);
-    public boolean updateCustomerEircode(int id, String eircode);
-    public boolean deleteCustomerByID(int id);
-
-}
