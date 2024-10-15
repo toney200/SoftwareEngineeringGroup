@@ -1,6 +1,8 @@
 
 import org.junit.Test;
 
+//ffail
+
 import junit.framework.Assert;
 
 public class CustomerTest extends Customer{
@@ -69,10 +71,32 @@ public class CustomerTest extends Customer{
     @SuppressWarnings("deprecation")
     @Test
     /*
+     * Customer Test 7
+     * Should return true when valid name is entered 
+     */
+    public void testValidateLastName003(){
+        Assert.assertTrue(testCust.validateLastName("Murphy"));
+    }
+
+    @SuppressWarnings("deprecation")
+    @Test
+    /*
+     * Customer Test 8
+     * Should return false when the name contains a digit.
+     */
+    public void testValidateLastName004(){
+        Assert.assertEquals(false, testCust.validateLastName("K3nndedy"));
+    }
+
+    @SuppressWarnings("deprecation")
+    @Test
+    /*
      * Customer Test 13
-     * Should return true when a valid phone number is passed in
+     * Should return true when a valid phone number is passed in.e
      */
     public void testValidatePhoneNo001(){
         Assert.assertEquals(true, testCust.validatePhoneNo("0873925974"));
     }
+
+
 }
