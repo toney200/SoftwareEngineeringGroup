@@ -2,7 +2,7 @@ package Publications;
 
 public class Publications {
 	
-	boolean validatePublicationID() {
+	boolean validatePublicationName() {
 		return true;
 	}
 }
