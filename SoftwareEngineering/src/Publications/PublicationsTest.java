@@ -245,6 +245,8 @@ class PublicationsTest {
 	@Test
 	void testValidatePublicationFrequency001() {
 		assertEquals(true, testObj.validatePublicationFrequency("Weekly"));
+		assertEquals(true, testObj.validatePublicationFrequency("Daily"));
+		assertEquals(true, testObj.validatePublicationFrequency("Monthly"));
 	}
 	
 	/*
