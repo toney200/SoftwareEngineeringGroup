@@ -34,100 +34,99 @@ public class MySQLConnector {
 		
 	}	
 
-	public boolean insertCustomerDetails(Customer c) {
-	
-		boolean insertSucessfull = true;
-	
-		try {
-		
-			//Create prepared statement to issue SQL query to the database
-			preparedStatement = connect.prepareStatement("insert into customers values (default, ?, ?, ?, ?, ?, ?, ?)");
-			preparedStatement.setInt(1, c.getID());
-			preparedStatement.setString(2, c.getFirstName());
-			preparedStatement.setString(3, c.getLastName());
-			preparedStatement.setString(4, c.getPhoneNumber());
-			preparedStatement.setString(5, c.getAddress());
-			preparedStatement.setString(6, c.getEircode());
-			preparedStatement.setInt(7, c.getDeliveryAreaId());
-			preparedStatement.executeUpdate();
-		}
-		catch (Exception e) {
-			insertSucessfull = false;
-		}
-	
-		return insertSucessfull;
-	}
-	
-	public boolean insertDeliveryAreaDetails(DeliveryArea da) {
-		
-		boolean insertSucessfull = true;
-	
-		try {
-		
-			//Create prepared statement to issue SQL query to the database
-			preparedStatement = connect.prepareStatement("insert into deliveryareas values (default, ?, ?)");
-			preparedStatement.setInt(1, da.getID());
-			preparedStatement.setString(2, da.getName());
-			preparedStatement.executeUpdate();
-		}
-		catch (Exception e) {
-			insertSucessfull = false;
-		}
-	
-		return insertSucessfull;
-	}
-	
-	public boolean insertPublicationDetails(Publications p) {
-		
-		boolean insertSucessfull = true;
-	
-		try {
-		
-			//Create prepared statement to issue SQL query to the database
-			preparedStatement = connect.prepareStatement("insert into publications values (default, ?, ?, ?, ?, ?, ?)");
-			preparedStatement.setInt(1, p.getPubID());
-			preparedStatement.setString(2, p.getPubName());
-			preparedStatement.setString(3, p.getPubAuthor());
-			preparedStatement.setString(4, p.getPubType());
-			preparedStatement.setString(5, p.getPubFrequency());
-			preparedStatement.setDouble(6, p.getPubCost());
-			preparedStatement.executeUpdate();
-		}
-		catch (Exception e) {
-			insertSucessfull = false;
-		}
-	
-		return insertSucessfull;
-	}
-	
-	public boolean insertOrderDetails(Order p) {
-		
-		boolean insertSucessfull = true;
-	
-		try {
-		
-			//Create prepared statement to issue SQL query to the database
-			preparedStatement = connect.prepareStatement("insert into orders values (default, ?, ?, ?, ?, ?)");
-			preparedStatement.setInt(1, p.getID());
-			preparedStatement.setDate(2, p.getDate());
-			preparedStatement.setDate(3, p.getStartAgainDate());
-			preparedStatement.setInt(4, p.getCustomerId());
-			preparedStatement.setInt(5, p.getPublicationId());
-			preparedStatement.executeUpdate();
-		}
-		catch (Exception e) {
-			insertSucessfull = false;
-		}
-	
-		return insertSucessfull;
-	}
-
-//	public static void main(String[] args) {
+//	public boolean insertCustomerDetails(Customer c) {
+//	
+//		boolean insertSucessfull = true;
+//	
 //		try {
-//			MySQLConnector connector = new MySQLConnector();
-//		} catch(Exception e) {
-//			e.printStackTrace();
+//		
+//			//Create prepared statement to issue SQL query to the database
+//			preparedStatement = connect.prepareStatement("insert into customers values (default, ?, ?, ?, ?, ?, ?)");
+//			preparedStatement.setString(1, c.getFirstName());
+//			preparedStatement.setString(2, c.getLastName());
+//			preparedStatement.setString(3, c.getPhoneNumber());
+//			preparedStatement.setString(4, c.getAddress());
+//			preparedStatement.setString(5, c.getEircode());
+//			preparedStatement.setInt(6, c.getDeliveryAreaId());
+//			preparedStatement.executeUpdate();
 //		}
+//		catch (Exception e) {
+//			insertSucessfull = false;
+//		}
+//	
+//		return insertSucessfull;
 //	}
+	
+//	public boolean insertDeliveryAreaDetails(DeliveryArea da) {
+//		
+//		boolean insertSucessfull = true;
+//	
+//		try {
+//		
+//			//Create prepared statement to issue SQL query to the database
+//			preparedStatement = connect.prepareStatement("insert into deliveryareas values (default, ?)");
+//			preparedStatement.setString(1, da.getName());
+//			preparedStatement.executeUpdate();
+//		}
+//		catch (Exception e) {
+//			insertSucessfull = false;
+//		}
+//	
+//		return insertSucessfull;
+//	}
+	
+	public boolean insertPublicationDetails(Publication p) {
+		
+		boolean insertSucessfull = true;
+	
+		try {
+		
+			//Create prepared statement to issue SQL query to the database
+			preparedStatement = connect.prepareStatement("insert into publications values (default, ?, ?, ?, ?, ?)");
+			preparedStatement.setString(1, p.getPubName());
+			preparedStatement.setString(2, p.getPubAuthor());
+			preparedStatement.setString(3, p.getPubType());
+			preparedStatement.setString(4, p.getPubFrequency());
+			preparedStatement.setDouble(5, p.getPubCost());
+			preparedStatement.executeUpdate();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			insertSucessfull = false;
+		}
+	
+		return insertSucessfull;
+	}
+	
+//	public boolean insertOrderDetails(Order p) {
+//		
+//		boolean insertSucessfull = true;
+//	
+//		try {
+//		
+//			//Create prepared statement to issue SQL query to the database
+//			preparedStatement = connect.prepareStatement("insert into orders values (default, ?, ?, ?, ?, ?)");
+//			preparedStatement.setInt(1, p.getID());
+//			preparedStatement.setDate(2, p.getDate());
+//			preparedStatement.setDate(3, p.getStartAgainDate());
+//			preparedStatement.setInt(4, p.getCustomerId());
+//			preparedStatement.setInt(5, p.getPublicationId());
+//			preparedStatement.executeUpdate();
+//		}
+//		catch (Exception e) {
+//			insertSucessfull = false;
+//		}
+//	
+//		return insertSucessfull;
+//	}
+
+	// public static void main(String[] args) {
+	// 	try {
+	// 		MySQLConnector connector = new MySQLConnector();
+	// 	} catch(Exception e) {
+	// 		e.printStackTrace();
+	// 	}
+		
+	// }
 
 }
