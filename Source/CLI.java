@@ -1,3 +1,4 @@
+import Publications.Publication;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -110,6 +111,41 @@ public class CLI {
         catch(Exception e){
             System.out.println("Oops! We found a big issue. Please restart the application.");
         }
+    }
+
+
+    static void publicationCustomer(Publication newPublication){
+    
+        boolean validInput = false;
+
+        while(!validInput){
+
+            try{
+            System.out.println("Enter publication price: ");
+            newPublication.setPubCost(sc.nextDouble());
+
+            System.out.println("Enter publication name: ");
+            newPublication.setPubName(sc.next());
+
+            System.out.println("Enter publication type: ");
+            newPublication.setPubType(sc.next());
+
+            System.out.println("Enter publication author: ");
+            newPublication.setPubAuthor(sc.next());
+
+            System.out.println("Enter publication frequency: ");
+            newPublication.setPubFrequency(sc.next());
+
+            validInput = true;
+            }
+            catch(Exception e){
+                System.out.println("Error encountered when trying to enter publication information!!! Please try again");
+                validInput = false;
+            }
+
+       }
+
+
     }
 
 

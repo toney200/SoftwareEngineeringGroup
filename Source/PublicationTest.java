@@ -145,6 +145,7 @@ class PublicationTest {
 		assertEquals(true, testObj.validatePublicationType("Newspaper"));
 		assertEquals(true, testObj.validatePublicationType("Magazine"));
 		assertEquals(true, testObj.validatePublicationType("Book"));
+		assertEquals(true, testObj.validatePublicationType("Once"));
 	}
 	
 	/*
