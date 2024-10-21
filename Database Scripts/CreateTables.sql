@@ -1,9 +1,9 @@
 Create Table deliveryAreas(
-    DeliveryAreaID Integer(2) Primary key Not Null,
+    DeliveryAreaID Integer(2) Primary key Not Null Auto_Increment,
     name Varchar(50) Not Null);
 
 Create Table customers(
-    customerID Integer(8) Primary key Not Null,
+    customerID Integer(8) Primary key Not Null Auto_Increment,
     firstName Varchar(20) Not Null,
     lastName Varchar(20) Not Null,
     phoneNumber Integer(10) Not Null,
@@ -17,15 +17,15 @@ Create Table customers(
     On Update Cascade);
 
 Create Table publications(
-    publicationID Integer(4) Primary key Not Null,
+    publicationID Integer(4) Primary key Not Null Auto_Increment,
     title Varchar(50) Not Null,
     author Varchar(50),
     type Varchar(9) Not Null,
     frequency Varchar(7),
-    cost Decimal(2, 2) Not Null);
+    cost Double(65, 2) Not Null);
 
 Create Table orders(
-    orderID Integer(8) Primary Key Not Null,
+    orderID Integer(8) Primary Key Not Null Auto_Increment,
     orderDate Date Not Null,
     startAgainDate Date,
     customerID Integer(8) Not Null,
