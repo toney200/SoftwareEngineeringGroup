@@ -1,4 +1,4 @@
-Drop tables deliveryarea;
-Drop tables customers;
-Drop tables publications;
-Drop tables orders;
+Drop table deliveryarea;
+Drop table customers;
+Drop table publications;
+Drop table orders;
