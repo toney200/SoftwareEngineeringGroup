@@ -12,7 +12,7 @@ import Publications.Publications.InvalidPublicationNameException;
 /**
  * 
  */
-class PublicationsTest {
+class PublicationTest {
 
 	
 	Publications testObj = new Publications();
