@@ -44,7 +44,7 @@ public class MySQLConnector {
 //			preparedStatement = connect.prepareStatement("insert into customers values (default, ?, ?, ?, ?, ?, ?)");
 //			preparedStatement.setString(1, c.getFirstName());
 //			preparedStatement.setString(2, c.getLastName());
-//			preparedStatement.setString(3, c.getPhoneNumber());
+//			preparedStatement.setInt(3, c.getPhoneNumber());
 //			preparedStatement.setString(4, c.getAddress());
 //			preparedStatement.setString(5, c.getEircode());
 //			preparedStatement.setInt(6, c.getDeliveryAreaId());
