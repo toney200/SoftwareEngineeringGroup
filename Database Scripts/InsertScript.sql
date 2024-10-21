@@ -5,5 +5,5 @@ insert into publications values(default, 'The Divine Comedy', 'Dante Alighieri',
 insert into deliveryareas values(default, 'Monksland');
 insert into deliveryareas values(default, 'Garrycastle');
 
-insert into customers values(default, 'Dimitrije', 'Sreckovic', 0894622672, '138 River Village', 'N37Y6D5', 1);
-insert into customers values(default, 'John', 'Doe', 0891234567, '50 Cypress gardens', 'N37D5T7', 2);
+insert into customers values(default, 'Dimitrije', 'Sreckovic', '0894622672', '138 River Village', 'N37Y6D5', 1);
+insert into customers values(default, 'John', 'Doe', '0891234567', '50 Cypress gardens', 'N37D5T7', 2);
