@@ -1,4 +1,4 @@
-package Publications;
+
 /*
  * This class represents Publications, the details include: cost, name, type, author, frequency and id number.
  * It includes validation methods to ensure data integrity. 
@@ -31,6 +31,7 @@ public class Publication {
 			this.pubCost = pubCost;
 		}
 		
+		
 	}
 
 	public String getPubName() {
@@ -38,9 +39,12 @@ public class Publication {
 	}
 	//Setter for pubName with validation
 	public void setPubName(String pubName) {
-		if(validatePublicationName(pubName) == true) {
-			this.pubName = pubName;
-		}
+			if(validatePublicationName(pubName) == true) {
+				this.pubName = pubName;
+			}
+			
+	
+
 	}
 
 	public String getPubType() {
@@ -141,7 +145,7 @@ public class Publication {
 	boolean validatePublicationFrequency(String pubFrequency) {
 		//checks if null and contains 3 strings given.
 		if(pubFrequency != null) {
-			if(pubFrequency.contains("Daily") || pubFrequency.contains("Weekly") || pubFrequency.contains("Monthly")){
+			if(pubFrequency.contains("Daily") || pubFrequency.contains("Weekly") || pubFrequency.contains("Monthly") || pubFrequency.contains("Once")){
 				return true;
 			}
 		}
