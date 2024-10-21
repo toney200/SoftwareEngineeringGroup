@@ -1,4 +1,3 @@
-import java.util.regex.Pattern;
 
 public class Customer {
     
@@ -10,6 +9,7 @@ public class Customer {
     private String address;
     private String eircode;
     private String phoneNo;
+    private int deliverAreaID;
     private int id;
 
     // The variables below inform the format of the eicode and phone numbers when being added by the User
@@ -54,16 +54,22 @@ public class Customer {
     }
 
 
-    public void setLastName(String name){
+    public void setLastName(String name) throws Exception{
         if (validateLastName(name) == true){
             this.lastName = name;
+        }
+        else {
+            throw new Exception();
         }
     }
 
     
-    public void setPhoneNo(String phoneNumber){
+    public void setPhoneNo(String phoneNumber) throws Exception{
         if(validatePhoneNo(phoneNumber) == true){
             this.phoneNo = phoneNo;
+        }
+        else {
+            throw new Exception();
         }
     }
 

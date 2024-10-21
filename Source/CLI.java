@@ -11,8 +11,9 @@ public class CLI {
         System.out.println("Select from the following options:\n");
         System.out.println("1. Customer Features    " +
                 "2. Order Functions     " +
-                "3. Delivery Area Management    " +
-                "4. Staff Management");
+                "3. Stock Management    " +
+                "4. Delivery Area Management    " +
+                "5. Staff Management");
         while(!validInput) {
             try {
                 userSelect = sc.nextInt();
@@ -57,6 +58,8 @@ public class CLI {
                         customerCreation(newCustomer);
                         return;
                     case 2:
+                    case 3:
+                    default:
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Please enter a number from the aforementioned options!");
@@ -72,7 +75,31 @@ public class CLI {
     the 'main' screen when finished.
      */
     static void customerCreation(Customer newCustomer){
-        sc = new Scanner(System.in);
+        
+        boolean validInput = false;
+
+        while(!validInput){
+            try {
+                System.out.println("Enter first name: ");
+                newCustomer.setFirstName(sc.next());
+                System.out.println("Enter last name: ");
+                newCustomer.setLastName(sc.next());
+                System.out.println("Enter phone number: ");
+                newCustomer.setPhoneNo(sc.next());
+                System.out.println("Enter customer address: ");
+                newCustomer.setAddress(sc.nextLine());
+                System.out.println("Enter customer eircode: ");
+                validInput = true;
+            } catch (Exception e) {
+                System.out.println("Error encountered when inserting customer information. Please try again and mind your syntax");
+                validInput = false;
+            }
+
+        }
+        
+
+
+        
     }
 
     public static void main(String[] args) {
