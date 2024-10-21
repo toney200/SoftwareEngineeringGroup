@@ -3,7 +3,7 @@ package Publications;
  * This class represents Publications, the details include: cost, name, type, author, frequency and id number.
  * It includes validation methods to ensure data integrity. 
  */
-public class Publications {
+public class Publication {
 	
 	//Class Variables
 	  private double pubCost;
@@ -13,7 +13,7 @@ public class Publications {
 	  private String pubFrequency;
 	  private int pubID;
 	  
-	public Publications() {
+	public Publication() {
 		
 	}
 	  //Getter and Setters
