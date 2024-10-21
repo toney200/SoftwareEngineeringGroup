@@ -1,12 +1,13 @@
-import Publications.Publication;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CLI {
     static Scanner sc = new Scanner(System.in);
-
+ 
+    
     CLI() throws Exception{
-        int userSelect = 0;
+        
+    	int userSelect = 0;
         boolean validInput = false;
 
         System.out.println("Select from the following options:\n");
@@ -39,8 +40,8 @@ public class CLI {
     The method will route the user to the next customer-related function based on their inputs here.
      */
     static void customerRouting(){
-        sc = new Scanner(System.in);
-        int userSelect = 0;
+        
+    	int userSelect = 0;
         boolean validInput = false;
 
         System.out.println("Select from the following options: \n");
@@ -76,8 +77,8 @@ public class CLI {
     the 'main' screen when finished.
      */
     static void customerCreation(Customer newCustomer){
-        
-        boolean validInput = false;
+    	MySQLConnector sql = new MySQLConnector();
+    	boolean validInput = false;
 
         while(!validInput){
             try {
@@ -94,6 +95,15 @@ public class CLI {
             } catch (Exception e) {
                 System.out.println("Error encountered when inserting customer information. Please try again and mind your syntax");
                 validInput = false;
+            }
+
+           if (sql.insertCustomerDetails(newCustomer) == true){
+               System.out.println("New customer successfully created");
+               return;
+            }
+            else if (sql.insertCustomerDetails(newCustomer == false)){
+                System.out.println("Unable to create new customer profile. Please try again.");
+                return;
             }
 
         }
@@ -115,7 +125,7 @@ public class CLI {
 
 
     static void publicationCustomer(Publication newPublication){
-    
+    	MySQLConnector sql = new MySQLConnector();
         boolean validInput = false;
 
         while(!validInput){
@@ -143,7 +153,17 @@ public class CLI {
                 validInput = false;
             }
 
+            
+
        }
+        if (sql.insertPublicationDetails(newPublication) == true) {
+        	System.out.println("New publication successfully entered.");
+        	return;
+        }
+        else if (sql.insertPublicationDetails(newPublication) == false) {
+        	System.out.println("Unable to create new publication item. Please try again.");
+        	return;
+        }
 
 
     }
