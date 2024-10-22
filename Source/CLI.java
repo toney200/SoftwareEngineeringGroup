@@ -97,7 +97,7 @@ public class CLI {
 	                newCustomer.setPhoneNo(sc.next());
 	                sc.nextLine();
 	                System.out.println("Enter customer address: ");
-	                newCustomer.setAddress(sc.next());
+	                newCustomer.setAddress(sc.nextLine());
 	                System.out.println("Enter customer eircode: ");
 	                newCustomer.setEircode(sc.next());
 	                System.out.println("Enter delivery area ID: ");
@@ -148,15 +148,15 @@ public class CLI {
                 try{
                 System.out.println("Enter publication price: ");
                 newPublication.setPubCost(sc.nextDouble());
-
+		sc.nextLine();
                 System.out.println("Enter publication name: ");
-                newPublication.setPubName(sc.next());
+                newPublication.setPubName(sc.nextLine());
 
                 System.out.println("Enter publication type: ");
                 newPublication.setPubType(sc.next());
-
+		sc.nextLine();
                 System.out.println("Enter publication author: ");
-                newPublication.setPubAuthor(sc.next());
+                newPublication.setPubAuthor(sc.nextLine());
 
                 System.out.println("Enter publication frequency: ");
                 newPublication.setPubFrequency(sc.next());
