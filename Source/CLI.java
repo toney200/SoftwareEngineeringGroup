@@ -97,7 +97,7 @@ public class CLI {
 	                newCustomer.setPhoneNo(sc.next());
 	                sc.nextLine();
 	                System.out.println("Enter customer address: ");
-	                newCustomer.setAddress(sc.next());
+	                newCustomer.setAddress(sc.nextLine());
 	                System.out.println("Enter customer eircode: ");
 	                newCustomer.setEircode(sc.next());
 	                System.out.println("Enter delivery area ID: ");
