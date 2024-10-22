@@ -24,6 +24,11 @@ public class CLI {
                         validInput = true;
                         customerRouting();
                         break;
+                    case 3:
+                    	validInput = true;
+                    	Publication newPub = new Publication();
+                    	publicationCreation(newPub);
+                    	break;
                     default:
                         System.out.println("Unexpected input. Try again.");
                         sc.nextLine();
@@ -89,7 +94,7 @@ public class CLI {
 	                System.out.println("Enter last name: ");
 	                newCustomer.setLastName(sc.next());
 	                System.out.println("Enter phone number: ");
-	                newCustomer.setPhoneNo(sc.nextInt());
+	                newCustomer.setPhoneNo(sc.next());
 	                sc.nextLine();
 	                System.out.println("Enter customer address: ");
 	                newCustomer.setAddress(sc.next());
@@ -103,11 +108,11 @@ public class CLI {
 	                validInput = false;
 	            }
 	
-	           if (sql.insertCustomerDetails(newCustomer) == true){
+	           if (newCustomer.sendCustomerToDB(newCustomer) == true){
 	               System.out.println("New customer successfully created");
 	               return;
 	            }
-	            else if (sql.insertCustomerDetails(newCustomer) == false){
+	            else if (newCustomer.sendCustomerToDB(newCustomer) == false){
 	                System.out.println("Unable to create new customer profile. Please try again.");
 	                return;
 	            }
@@ -133,7 +138,7 @@ public class CLI {
     }
 
 
-    static void publicationCustomer(Publication newPublication){
+    static void publicationCreation(Publication newPublication){
     	try {
     		MySQLConnector sql = new MySQLConnector();
     		boolean validInput = false;
