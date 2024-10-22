@@ -1,18 +1,19 @@
-import Publications.Publication;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CLI {
     static Scanner sc = new Scanner(System.in);
-
+ 
+    
     CLI() throws Exception{
-        int userSelect = 0;
+        
+    	int userSelect = 0;
         boolean validInput = false;
 
         System.out.println("Select from the following options:\n");
         System.out.println("1. Customer Features    " +
                 "2. Order Functions     " +
-                "3. Stock Management    " +
+                "3. Publication Management    " +
                 "4. Delivery Area Management    " +
                 "5. Staff Management");
         while(!validInput) {
@@ -23,6 +24,11 @@ public class CLI {
                         validInput = true;
                         customerRouting();
                         break;
+                    case 3:
+                    	validInput = true;
+                    	Publication newPub = new Publication();
+                    	publicationCreation(newPub);
+                    	break;
                     default:
                         System.out.println("Unexpected input. Try again.");
                         sc.nextLine();
@@ -39,8 +45,8 @@ public class CLI {
     The method will route the user to the next customer-related function based on their inputs here.
      */
     static void customerRouting(){
-        sc = new Scanner(System.in);
-        int userSelect = 0;
+        
+    	int userSelect = 0;
         boolean validInput = false;
 
         System.out.println("Select from the following options: \n");
@@ -76,28 +82,46 @@ public class CLI {
     the 'main' screen when finished.
      */
     static void customerCreation(Customer newCustomer){
-        
-        boolean validInput = false;
-
-        while(!validInput){
-            try {
-                System.out.println("Enter first name: ");
-                newCustomer.setFirstName(sc.next());
-                System.out.println("Enter last name: ");
-                newCustomer.setLastName(sc.next());
-                System.out.println("Enter phone number: ");
-                newCustomer.setPhoneNo(sc.next());
-                System.out.println("Enter customer address: ");
-                newCustomer.setAddress(sc.nextLine());
-                System.out.println("Enter customer eircode: ");
-                validInput = true;
-            } catch (Exception e) {
-                System.out.println("Error encountered when inserting customer information. Please try again and mind your syntax");
-                validInput = false;
-            }
-
+    	try{
+    		MySQLConnector sql = new MySQLConnector();
+    	
+	    	boolean validInput = false;
+	
+	        while(!validInput){
+	            try {
+	                System.out.println("Enter first name: ");
+	                newCustomer.setFirstName(sc.next());
+	                System.out.println("Enter last name: ");
+	                newCustomer.setLastName(sc.next());
+	                System.out.println("Enter phone number: ");
+	                newCustomer.setPhoneNo(sc.next());
+	                sc.nextLine();
+	                System.out.println("Enter customer address: ");
+	                newCustomer.setAddress(sc.next());
+	                System.out.println("Enter customer eircode: ");
+	                newCustomer.setEircode(sc.next());
+	                System.out.println("Enter delivery area ID: ");
+	                newCustomer.setDeliveryAreaId(sc.nextInt());
+	                validInput = true;
+	            } catch (Exception e) {
+	                System.out.println("Error encountered when inserting customer information. Please try again and mind your syntax");
+	                validInput = false;
+	            }
+	
+	           if (newCustomer.sendCustomerToDB(newCustomer) == true){
+	               System.out.println("New customer successfully created");
+	               return;
+	            }
+	            else if (newCustomer.sendCustomerToDB(newCustomer) == false){
+	                System.out.println("Unable to create new customer profile. Please try again.");
+	                return;
+	            }
+	
+	        }
+	       }
+        catch(Exception e) {
+        	e.printStackTrace();
         }
-        
 
 
         
@@ -114,36 +138,54 @@ public class CLI {
     }
 
 
-    static void publicationCustomer(Publication newPublication){
-    
-        boolean validInput = false;
+    static void publicationCreation(Publication newPublication){
+    	try {
+    		MySQLConnector sql = new MySQLConnector();
+    		boolean validInput = false;
+    		
+    		while(!validInput){
 
-        while(!validInput){
+                try{
+                System.out.println("Enter publication price: ");
+                newPublication.setPubCost(sc.nextDouble());
 
-            try{
-            System.out.println("Enter publication price: ");
-            newPublication.setPubCost(sc.nextDouble());
+                System.out.println("Enter publication name: ");
+                newPublication.setPubName(sc.next());
 
-            System.out.println("Enter publication name: ");
-            newPublication.setPubName(sc.next());
+                System.out.println("Enter publication type: ");
+                newPublication.setPubType(sc.next());
 
-            System.out.println("Enter publication type: ");
-            newPublication.setPubType(sc.next());
+                System.out.println("Enter publication author: ");
+                newPublication.setPubAuthor(sc.next());
 
-            System.out.println("Enter publication author: ");
-            newPublication.setPubAuthor(sc.next());
+                System.out.println("Enter publication frequency: ");
+                newPublication.setPubFrequency(sc.next());
 
-            System.out.println("Enter publication frequency: ");
-            newPublication.setPubFrequency(sc.next());
+                validInput = true;
+                }
+                catch(Exception e){
+                    System.out.println("Error encountered when trying to enter publication information!!! Please try again");
+                    validInput = false;
+                }
 
-            validInput = true;
+                
+
+           }
+            if (sql.insertPublicationDetails(newPublication) == true) {
+            	System.out.println("New publication successfully entered.");
+            	return;
             }
-            catch(Exception e){
-                System.out.println("Error encountered when trying to enter publication information!!! Please try again");
-                validInput = false;
+            else if (sql.insertPublicationDetails(newPublication) == false) {
+            	System.out.println("Unable to create new publication item. Please try again.");
+            	return;
             }
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+        
 
-       }
+        
 
 
     }

@@ -1,4 +1,3 @@
-
 public class Customer {
     
     /*
@@ -9,7 +8,7 @@ public class Customer {
     private String address;
     private String eircode;
     private String phoneNo;
-    private int deliverAreaID;
+    private int deliveryAreaID;
     private int id;
 
     // The variables below inform the format of the eicode and phone numbers when being added by the User
@@ -22,30 +21,50 @@ public class Customer {
     }
 
 
+    public boolean sendCustomerToDB(Customer customer) throws Exception{
+        final MySQLConnector sql = new MySQLConnector();
+        if (sql.insertCustomerDetails(customer) == true){
+            return true;
+        }
+        else return false;
+    }
+
+    
     public int getID(){
         return this.getID();
     }
 
 
-    public String getName(){
-        return null;
+    public String getFirstName(){
+        return this.firstName;
     }
 
+    public String getLastName() {
+    	return this.lastName;
+    }
 
     public String getAddress(){
-        return null;
+        return this.address;
     }
 
 
     public String getEircode(){
-        return null;
+        return this.eircode;
     }
 
 
     public String getPhoneNo(){
-        return null;
+      return this.phoneNo;
+
+    }
+    
+    public int getDeliveryAreaId() {
+    	return 1;
     }
 
+    public void setDeliveryAreaId(int id) {
+    	this.deliveryAreaID = id;
+    }
 
     public void setFirstName(String name){
         if (validateFirstName(name) == true){
@@ -66,16 +85,17 @@ public class Customer {
     
     public void setPhoneNo(String phoneNumber) throws Exception{
         if(validatePhoneNo(phoneNumber) == true){
-            this.phoneNo = phoneNo;
+            this.phoneNo = phoneNumber;
         }
         else {
             throw new Exception();
         }
+        
     }
 
 
     public void setAddress(String address){
-
+    	this.address = address;
     }
 
 

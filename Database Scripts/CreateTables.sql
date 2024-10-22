@@ -6,7 +6,7 @@ Create Table customers(
     customerID Integer(8) Primary key Not Null Auto_Increment,
     firstName Varchar(20) Not Null,
     lastName Varchar(20) Not Null,
-    phoneNumber Integer(10) Not Null,
+    phoneNumber Varchar(10) Not Null,
     address Varchar(100) Not Null,
     eircode Varchar(7) Not Null,
     deliveryAreaID Integer(2) Not Null,
