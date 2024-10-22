@@ -148,15 +148,15 @@ public class CLI {
                 try{
                 System.out.println("Enter publication price: ");
                 newPublication.setPubCost(sc.nextDouble());
-
+		sc.nextLine();
                 System.out.println("Enter publication name: ");
-                newPublication.setPubName(sc.next());
+                newPublication.setPubName(sc.nextLine());
 
                 System.out.println("Enter publication type: ");
                 newPublication.setPubType(sc.next());
-
+		sc.nextLine();
                 System.out.println("Enter publication author: ");
-                newPublication.setPubAuthor(sc.next());
+                newPublication.setPubAuthor(sc.nextLine());
 
                 System.out.println("Enter publication frequency: ");
                 newPublication.setPubFrequency(sc.next());
