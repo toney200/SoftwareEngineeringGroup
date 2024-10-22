@@ -32,7 +32,15 @@ public class MySQLConnector {
 		}
 		
 		
-	}	
+	}
+
+	public void closeDB() {
+		try {
+			connect.close();
+		} catch(Exception e) {
+			System.out.println("Failed to close connection: " + e.getMessage());
+		}
+	}
 
 //	public boolean insertCustomerDetails(Customer c) {
 //	
