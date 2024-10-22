@@ -9,13 +9,15 @@ public class CLI {
         
     	int userSelect = 0;
         boolean validInput = false;
+        boolean finished = false;
 
         System.out.println("Select from the following options:\n");
         System.out.println("1. Customer Features    " +
                 "2. Order Functions     " +
                 "3. Publication Management    " +
                 "4. Delivery Area Management    " +
-                "5. Staff Management");
+                "5. Staff Management" +
+                "9. Exit Application");
         while(!validInput) {
             try {
                 userSelect = sc.nextInt();
@@ -29,6 +31,10 @@ public class CLI {
                     	Publication newPub = new Publication();
                     	publicationCreation(newPub);
                     	break;
+                    case 9:
+                        validInput = true;
+                        finished = true;
+                        System.out.println("Application shutting down...")
                     default:
                         System.out.println("Unexpected input. Try again.");
                         sc.nextLine();
@@ -36,6 +42,13 @@ public class CLI {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Please enter a valid option!");
+            }
+        }
+        if(!finished) {
+            try {
+                new CLI();
+            } catch(Exception e){
+            System.out.println("Oops! We found a big issue. Please restart the application.");
             }
         }
     }
