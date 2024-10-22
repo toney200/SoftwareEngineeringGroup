@@ -34,46 +34,46 @@ public class MySQLConnector {
 		
 	}	
 
-//	public boolean insertCustomerDetails(Customer c) {
-//	
-//		boolean insertSucessfull = true;
-//	
-//		try {
-//		
-//			//Create prepared statement to issue SQL query to the database
-//			preparedStatement = connect.prepareStatement("insert into customers values (default, ?, ?, ?, ?, ?, ?)");
-//			preparedStatement.setString(1, c.getFirstName());
-//			preparedStatement.setString(2, c.getLastName());
-//			preparedStatement.setString(3, c.getPhoneNumber());
-//			preparedStatement.setString(4, c.getAddress());
-//			preparedStatement.setString(5, c.getEircode());
-//			preparedStatement.setInt(6, c.getDeliveryAreaId());
-//			preparedStatement.executeUpdate();
-//		}
-//		catch (Exception e) {
-//			insertSucessfull = false;
-//		}
-//	
-//		return insertSucessfull;
-//	}
+	public boolean insertCustomerDetails(Customer c) {
 	
-//	public boolean insertDeliveryAreaDetails(DeliveryArea da) {
-//		
-//		boolean insertSucessfull = true;
-//	
-//		try {
-//		
-//			//Create prepared statement to issue SQL query to the database
-//			preparedStatement = connect.prepareStatement("insert into deliveryareas values (default, ?)");
-//			preparedStatement.setString(1, da.getName());
-//			preparedStatement.executeUpdate();
-//		}
-//		catch (Exception e) {
-//			insertSucessfull = false;
-//		}
-//	
-//		return insertSucessfull;
-//	}
+		boolean insertSucessfull = true;
+	
+		try {
+		
+			//Create prepared statement to issue SQL query to the database
+			preparedStatement = connect.prepareStatement("insert into customers values (default, ?, ?, ?, ?, ?, ?)");
+			preparedStatement.setString(1, c.getFirstName());
+			preparedStatement.setString(2, c.getLastName());
+			preparedStatement.setString(3, c.getPhoneNo());
+			preparedStatement.setString(4, c.getAddress());
+			preparedStatement.setString(5, c.getEircode());
+			preparedStatement.setInt(6, c.getDeliveryAreaId());
+			preparedStatement.executeUpdate();
+		}
+		catch (Exception e) {
+			insertSucessfull = false;
+		}
+	
+		return insertSucessfull;
+	}
+	
+	public boolean insertDeliveryAreaDetails(DeliveryArea da) {
+		
+		boolean insertSucessfull = true;
+	
+		try {
+		
+			//Create prepared statement to issue SQL query to the database
+			preparedStatement = connect.prepareStatement("insert into deliveryareas values (default, ?)");
+			preparedStatement.setString(1, da.getDeliveryAreaName());
+			preparedStatement.executeUpdate();
+		}
+		catch (Exception e) {
+			insertSucessfull = false;
+		}
+	
+		return insertSucessfull;
+	}
 	
 	public boolean insertPublicationDetails(Publication p) {
 		
