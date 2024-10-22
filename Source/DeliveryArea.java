@@ -1,4 +1,3 @@
-package DeliveryArea;
 
 public class DeliveryArea {
 
@@ -37,4 +36,13 @@ public class DeliveryArea {
         return false;
     }
 
+    boolean createDeliveryAreaInDB(DeliveryArea da){
+        try {
+            MySQLConnector sql = new MySQLConnector();
+            return sql.insertDeliveryAreaDetails(da);
+        } catch(Exception e) {
+            System.out.println("Error inserting delivery area into database.");
+            return false;
+        }
+    }
 }

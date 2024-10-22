@@ -1,19 +1,21 @@
+import java.util.regex.Pattern;
+
 public class Customer {
     
     /*
      * Member variables outlining basic customer information
      */
-    private String firstName;
-    private String lastName;
-    private String address;
-    private String eircode;
-    private String phoneNo;
-    private int deliveryAreaID;
-    private int id;
+    private String firstName;   // the first name of a customer
+    private String lastName;    // the last name of a customer
+    private String address;     // the address of a given customer
+    private String eircode;     // the eircode/postal code tied to the given customer
+    private String phoneNo;     // the contact number of the customer
+    private int deliveryAreaID; // each customer falls within a delivery area defined by the user
+    private int id;             // customer ID is a unique identifier that differentiates customers in the database
 
     // The variables below inform the format of the eicode and phone numbers when being added by the User
     private static final String EIRCODE_REGEX = "^[A-Za-z0-9]{3}[A-Za-z0-9]{4}$";
-    //private static final Pattern EIRCODE_PATTERN = Pattern.compile(EIRCODE_REGEX);
+    private static final Pattern EIRCODE_PATTERN = Pattern.compile(EIRCODE_REGEX);
     private static final String PHONE_REGEX = "^08[3679][0-9]{7}$";
 
     public Customer(){
@@ -21,7 +23,7 @@ public class Customer {
     }
 
 
-    public boolean sendCustomerToDB(Customer customer) throws Exception{
+    public boolean createCustomerInDB(Customer customer) throws Exception{
         final MySQLConnector sql = new MySQLConnector();
         if (sql.insertCustomerDetails(customer) == true){
             return true;
@@ -34,25 +36,41 @@ public class Customer {
         return this.getID();
     }
 
-
+    /*
+    Returns the firstName member variable of th instance of the class this function is called on.
+     */
     public String getFirstName(){
         return this.firstName;
     }
 
+
+    /*
+    Returns the lastName member variable of th instance of the class this function is called on.
+     */
     public String getLastName() {
     	return this.lastName;
     }
 
+
+    /*
+    Returns the address member variable of th instance of the class this function is called on.
+     */
     public String getAddress(){
         return this.address;
     }
 
 
+    /*
+    Returns the eircode member variable of th instance of the class this function is called on.
+     */
     public String getEircode(){
         return this.eircode;
     }
 
 
+    /*
+    Returns the phoneNo member variable of th instance of the class this function is called on.
+     */
     public String getPhoneNo(){
       return this.phoneNo;
 
@@ -99,12 +117,12 @@ public class Customer {
     }
 
 
-    public void setEircode(String eircode){
+    public void setEircode(String eircode) throws Exception{
         if (validateEircode(eircode)){
             this.eircode = eircode;
         }
         else {
-            // TODO: 
+            throw new Exception();
         }
     }
 
