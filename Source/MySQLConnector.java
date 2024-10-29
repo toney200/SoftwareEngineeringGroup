@@ -3,6 +3,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MySQLConnector {
@@ -56,6 +58,31 @@ public class MySQLConnector {
 	
 		return insertSucessfull;
 	}
+
+	/*
+	Queries the database for customers with a first or last name matching the parameters passed into this method and
+	returns them as an ArrayList of Customer objects.
+	 */
+	public ArrayList<Customer> searchCustomerByName(String firstname, String lastName){
+		ArrayList<Customer> customers = new ArrayList<Customer>();
+
+		try{
+			preparedStatement = connect.prepareStatement("select * from customers where firstname like ? or lastname like ?");
+			preparedStatement.setString(1, "%"+firstname+"%");
+			preparedStatement.setString(2, "%"+lastName+"%");
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				customers.add(new Customer(resultSet.getInt(0), resultSet.getString(1),
+						resultSet.getString(2), resultSet.getString(3),
+						resultSet.getString(4), resultSet.getString(5),
+						resultSet.getInt(6)));
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+        return customers;
+    }
 	
 	public boolean insertDeliveryAreaDetails(DeliveryArea da) {
 		

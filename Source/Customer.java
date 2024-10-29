@@ -1,4 +1,4 @@
-import java.util.regex.Pattern;
+import java.util.ArrayList;
 
 public class Customer {
     
@@ -15,28 +15,71 @@ public class Customer {
 
     // The variables below inform the format of the eicode and phone numbers when being added by the User
     private static final String EIRCODE_REGEX = "^[A-Za-z0-9]{3}[A-Za-z0-9]{4}$";
-    private static final Pattern EIRCODE_PATTERN = Pattern.compile(EIRCODE_REGEX);
     private static final String PHONE_REGEX = "^08[3679][0-9]{7}$";
 
+    private static MySQLConnector sqlConnector;
+
     public Customer(){
-        
+        if(sqlConnector == null){
+            instantiateSQLInstance();
+        }
     }
 
-
-    public boolean createCustomerInDB(Customer customer) throws Exception{
-        final MySQLConnector sql = new MySQLConnector();
-        if (sql.insertCustomerDetails(customer) == true){
-            return true;
+    public Customer(int id, String firstName, String lastName, String address, String eircode, String phoneNo, int deliveryAreaID){
+        if(sqlConnector == null){
+            instantiateSQLInstance();
         }
-        else return false;
+
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.eircode = eircode;
+        this.phoneNo = phoneNo;
+        this.deliveryAreaID = deliveryAreaID;
+    }
+
+    /**
+     * Creates a single instance of the SQL Connector class for the Customer class to make exclusive use of.
+     */
+    private void instantiateSQLInstance() {
+        try {
+            sqlConnector = new MySQLConnector();
+        }
+        catch(Exception e){
+            System.err.println("Error occured linking application to database. Ref instantiateSQLInstance() method.");
+        }
+    }
+
+    /**
+     * @param customer
+     * customer object to be inserted into database.
+     * @return boolean value representing sql insertion success.
+     */
+    public static boolean createCustomerInDB(Customer customer){
+        return sqlConnector.insertCustomerDetails(customer);
+    }
+
+    /**
+     * @param firstname customer first name as entered by the user
+     * @param lastname customer last name as entered by the user
+     * @return the list of Customer objects that contain either parameter as first/last name member variables
+     */
+    public static ArrayList<Customer> searchCustomerInDB(String firstname, String lastname){
+        return sqlConnector.searchCustomerByName(firstname, lastname);
+    }
+
+    public static boolean updateCustomerInDB(Customer customer){
+        // @todo insert method that updates SQL database from the MySQLConnector class
+        return false;
     }
 
     
     public int getID(){
-        return this.getID();
+        return this.id;
     }
 
-    /*
+    /**
     Returns the firstName member variable of th instance of the class this function is called on.
      */
     public String getFirstName(){
@@ -44,7 +87,7 @@ public class Customer {
     }
 
 
-    /*
+    /**
     Returns the lastName member variable of th instance of the class this function is called on.
      */
     public String getLastName() {
@@ -52,15 +95,15 @@ public class Customer {
     }
 
 
-    /*
-    Returns the address member variable of th instance of the class this function is called on.
+    /**
+    * Returns the address member variable of th instance of the class this function is called on.
      */
     public String getAddress(){
         return this.address;
     }
 
 
-    /*
+    /**
     Returns the eircode member variable of th instance of the class this function is called on.
      */
     public String getEircode(){
@@ -68,7 +111,7 @@ public class Customer {
     }
 
 
-    /*
+    /**
     Returns the phoneNo member variable of th instance of the class this function is called on.
      */
     public String getPhoneNo(){
@@ -77,7 +120,7 @@ public class Customer {
     }
     
     public int getDeliveryAreaId() {
-    	return 1;
+    	return this.deliveryAreaID;
     }
 
     public void setDeliveryAreaId(int id) {
@@ -127,7 +170,7 @@ public class Customer {
     }
 
 
-    /*
+    /**
      * Checks if the entered string is less than 2 or greater than 20 in length. Returns true if value falls within this range 
      * and does not contain numbers
      */
@@ -151,7 +194,7 @@ public class Customer {
     }
 
 
-    /*  
+    /**
     * Check if a passed in string is greater than 2 characters and less than 21. Returns false if value falls out of expected range
     * or if the string contains digit values. 
     */
@@ -172,7 +215,7 @@ public class Customer {
         return false;
     }
 
-    /*
+    /**
      * Checks if an entered address is within the character limits of 2 and 100 characters(inclusive). Returns true when string is
      * within this boundary
      */
@@ -185,7 +228,7 @@ public class Customer {
         return false;
     }
 
-    /*
+    /**
      * Checks if entered string matches the 7-character format of a typical Eircode, e.g. D08VF8H. Returns false if the length of the 
      * string is greater or less than 7 or does not match the usual format.
      */
@@ -203,11 +246,11 @@ public class Customer {
         return false;
     }
 
-    /*
+    /**
      * Checks a phone number to ensure the following:
-     * -> Length exactly 10 digits
-     * -> Begins with the digits of one of 4 mobile network operators, i.e. 083, 086, 087, 089
-     * -> Does not contain letters or symbols
+     *      Length exactly 10 digits;
+     *      Begins with the digits of one of 4 mobile network operators, i.e. 083, 086, 087, 089;
+     *      Does not contain letters or symbols
      */
     protected boolean validatePhoneNo(String phoneNo){
         if (phoneNo != null){
@@ -222,6 +265,17 @@ public class Customer {
             }
         }
         return false;
+    }
+
+    /**
+     * @return Formatted Customer object listing private member variables.
+     */
+    @Override
+    public String toString() {
+        return "Name: " + this.firstName + " " + this.lastName +
+                "\nPhone No. : " + this.phoneNo +
+                "\nAddress: " + this.address + ", " + this.eircode +
+                "\nDelivery Area: " + this.deliveryAreaID;
     }
 
 }

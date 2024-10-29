@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -54,7 +55,7 @@ public class CLI {
 //  *** CUSTOMER METHODS ***
 
 
-    /*
+    /**
     The customer routing method is accessed from main when selecting "Customer Features" in the opening console window.
     The method will route the user to the next customer-related function based on their inputs here.
      */
@@ -68,8 +69,8 @@ public class CLI {
                 validInput = true;
 
                 System.out.println("Select from the following options: \n");
-                System.out.println("1. Create a new customer profile    " +
-                        "2. View a customer profile     " +
+                System.out.println("1. Create a new customer    " +
+                        "2. Edit a customer profile     " +
                         "99. Exit to previous selection");
 
                 userSelect = sc.nextInt();
@@ -95,15 +96,12 @@ public class CLI {
     }
 
 
-    /*
-    This method is called from the customerRouting() method when the user opts to create a new customer profile
-    within the system. The method takes in all the member variables of a Customer object via user prompt and returns to
-    the 'main' screen when finished.
+    /**
+     * @param newCustomer
+     * Takes in all the member variables of a Customer object via user prompt and returns when finished.
      */
     static void customerCreation(Customer newCustomer){
     	try{
-    		MySQLConnector sql = new MySQLConnector();
-    	
 	    	boolean validInput = false;
 	
 	        while(!validInput){
@@ -126,11 +124,11 @@ public class CLI {
 	                System.out.println("Error encountered when inserting customer information. Please try again and mind your syntax");
 	            }
 	
-	           if (newCustomer.createCustomerInDB(newCustomer)){
+	           if (Customer.createCustomerInDB(newCustomer)){
 	               System.out.println("New customer successfully created");
 	               return;
 	            }
-	            else if (!newCustomer.createCustomerInDB(newCustomer)){
+	            else if (!Customer.createCustomerInDB(newCustomer)){
 	                System.out.println("Unable to create new customer profile. Please try again.");
 	                return;
 	            }
@@ -141,19 +139,47 @@ public class CLI {
         	System.out.println("Unable to connect to database. Please restart your application and try again.");
             e.printStackTrace();
         }
+    }
 
 
-        
+    /**
+     * Calls Customer.searchCustomerInDB() for a list of customers based on user selection.
+     */
+    private static void updateCustomer(){
+        ArrayList<Customer> customerList;
+        String firstName;
+        String lastName;
+        int userSelect = 0;
+
+        System.out.println("Enter the first and last name of the customer you wish to change details for: \n");
+        firstName = sc.next();
+        lastName = sc.next();
+        customerList = Customer.searchCustomerInDB(firstName, lastName);
+
+        for(Customer customer : customerList){
+            System.out.println(customerList.indexOf(customer) + 1);
+            System.out.println(customer.toString() + "\n");
+        }
+        System.out.println("Select the customer you would like to change the details for");
+        userSelect = sc.nextInt();
+        if (userSelect < 1 || userSelect >= customerList.size()){
+            System.out.println("Invalid input.");
+            return;
+        }
+        Customer customerSelected = customerList.get(userSelect - 1);
+
     }
 
 
 
-//*** DELIVERY AREA METHODS ***
 
 
-    /*
-    Intermediary function that directs the user to differing functions involved in the creation, modification or deletion
-    of DeliveryArea entities within the underlying database
+//  *** DELIVERY AREA METHODS ***
+
+
+    /**
+      * Directs the user to differing functions involved in the creation, modification or deletion
+      * of DeliveryArea entities within the underlying database
      */
     private static void deliveryAreaRouting(){
         int userSelect = 0;
@@ -220,17 +246,31 @@ public class CLI {
 
 
 
-// *** ORDER METHODS ***
+//  *** ORDER METHODS ***
+
+
+    private static void orderRouting(){
+        int userSelect = 0;
+        boolean validInput = false;
+
+        while(!validInput) {
+            System.out.println("Select from the following options: \n");
+            System.out.println("1. Create new order     " +
+                    "2. Place a scheduled order on hold     " +
+                    "99. Exit to previous selection");
+        }
+    }
 
 
 
-// *** PUBLICATION METHODS ***
+//  *** PUBLICATION METHODS ***
 
 
 
-    /*
-    Takes an object of the Publication class and inserts data into the member variables (user-defined). Sends object
-    of the class to the MySQLConnector class to be passed to SQL database.
+    /**
+     * @param newPublication
+     * Takes a Publication object and inserts data into the member variables (user-defined). Sends object
+     * of the class to the MySQLConnector class to be passed to SQL database.
      */
     static void publicationCreation(Publication newPublication){
     	try {
@@ -278,7 +318,7 @@ public class CLI {
 
 
 
-// *** MAIN ***
+//  *** MAIN ***
 
     /*
     Calls a new object of the CLI(Command Line Interface) class. Catches unforseen exceptions and notifies the user
@@ -290,7 +330,7 @@ public class CLI {
             new CLI();
         }
         catch(Exception e){
-            System.out.println("Oops! We ran into a big issue! Please restart the application.");
+            System.out.println("Oops! We ran into an unknown issue! Please restart the application.");
             e.printStackTrace();
         }
     }
