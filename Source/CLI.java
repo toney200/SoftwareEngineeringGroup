@@ -355,7 +355,7 @@ public class CLI {
             e.printStackTrace();
         }
     }
-//in progress not complete
+
     public static void updatePublication() {
         ArrayList<Publication> publicationList;
         String pubName;
