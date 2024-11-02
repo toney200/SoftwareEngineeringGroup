@@ -31,8 +31,10 @@ public class CLI {
                             break;
                         case 3:
                             validInput = true;
-                            Publication newPub = new Publication();
-                            publicationCreation(newPub);
+                            publicationRouting();
+							/*
+							 * Publication newPub = new Publication(); publicationCreation(newPub);
+							 */
                             break;
                         case 4:
                             validInput = true;
@@ -265,8 +267,46 @@ public class CLI {
 
 //  *** PUBLICATION METHODS ***
 
+    
+    static void publicationRouting() {
+    	int userSelect = 0;
+        boolean validInput = false;
 
+        while(!validInput) { // Loops until the Scanner receives a valid input.
+            try {
+                validInput = true;
 
+                System.out.println("Select from the following options: \n");
+                System.out.println("1. Create a new publication    " +
+                        "2. Find a publication         " +
+                		"3. Edit a publication         " +
+                        "99. Exit to previous selection");
+
+                userSelect = sc.nextInt();
+                switch (userSelect) {
+                    case 1:
+                    	Publication publication = new Publication();
+                    	publicationCreation(publication);
+                        return;
+                    case 2:
+                        retrievePublication();
+                        break;
+                    case 3:
+                        updatePublication();
+                        break;
+                    case 99:
+                        return;
+                    default:
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter a number from the aforementioned options!");
+                sc.nextLine();
+            }
+        }
+    }
+
+    
     /**
      * @param newPublication
      * Takes a Publication object and inserts data into the member variables (user-defined). Sends object
@@ -315,7 +355,84 @@ public class CLI {
             e.printStackTrace();
         }
     }
+//in progress not complete
+    public static void updatePublication() {
+        ArrayList<Publication> publicationList;
+        String pubName;
+        String pubAuthor;
+        boolean validInput = false;
 
+        while(!validInput) {
+            try{
+                System.out.println("Enter name of publication: ");
+                sc.nextLine();
+                pubName = sc.nextLine();
+
+                if(pubName.isEmpty()){
+                    System.out.println("Publication name cannot be empty.");
+
+                }
+                else if (pubName.equals("99")) {
+                    return;
+                }
+
+                publicationList = Publication.searchPublicationInDB(pubName);
+
+                if(publicationList.isEmpty()){
+                    System.out.println("Publication not found.");
+                }
+                else{
+                    for(Publication p : publicationList){
+                        System.out.println(p.toString());
+                    }
+                }
+
+            }
+            catch (InputMismatchException e) {
+                System.out.println("Please try again");
+            }
+        }
+    }
+/*
+* Retrieve information for publications when title is entered.
+* */
+    public static void retrievePublication() {
+        ArrayList<Publication> publicationList;
+        String pubName;
+        String pubAuthor;
+        boolean validInput = false;
+
+        while(!validInput) {
+            try{
+                System.out.println("Enter name of publication: ");
+                sc.nextLine();
+                pubName = sc.nextLine();
+
+                if(pubName.isEmpty()){
+                    System.out.println("Publication name cannot be empty.");
+
+                } else if (pubName.equals("99")) {
+                    return;
+                }
+                publicationList = Publication.searchPublicationInDB(pubName);
+
+                if(publicationList.isEmpty()){
+                    System.out.println("Publication not found.");
+                }
+                else{
+                    for(Publication p : publicationList){
+                        System.out.println(p.toString());
+                    }
+                }
+
+            }
+            catch (InputMismatchException e) {
+                System.out.println("Please try again");
+            }
+        }
+
+
+    }
 
 
 //  *** MAIN ***
