@@ -36,10 +36,7 @@ public class Publication {
 		instantiateSQLInstance();
 		return mySQLConnector.searchPublication(pubName);
 	}
-	/*Checks if mySQLConnector is created
- 	creates one if one is not found
- 	*/
-	
+
 	private static void instantiateSQLInstance() {
 		try {
 			if(mySQLConnector == null){
@@ -202,14 +199,15 @@ public class Publication {
 		}
 		return false;
 	}
-	//Used to get info in database to print on console
+
 	@Override
 	public String toString() {
 		return "Publication Name: " + this.pubName + " "
 				+ "\nPublication Type: " + this.pubType + " "
 				+ "\nPublication Author: " + this.pubAuthor + " "
 				+ "\nPublication Frequency: " + this.pubFrequency + " "
-				+ "\nPublication Cost: " + this.pubCost;
+				+ "\nPublication Cost: " + this.pubCost
+				+ "\n_______________________________________________________________________";
 	}
 	
 }
