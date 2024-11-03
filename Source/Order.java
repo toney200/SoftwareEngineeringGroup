@@ -10,10 +10,17 @@ public class Order {
     private Date startAgainDate;        // orders can be placed on hold. This date represents the end of that hold
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
+    /**
+     * @param customerID the ID of the customer to which this order is tied
+     */
     public void setCustomerID(int customerID) {
         this.customerID = customerID;
     }
 
+    /**
+     * Sets the Publication ID of this order such that the order can link to a specific item of inventory.
+     * @param publicationID the ID of the publication that this order has been created for
+     */
     public void setPublicationID(int publicationID) {
         this.publicationID = publicationID;
     }
@@ -23,16 +30,26 @@ public class Order {
      * @throws Exception if the order is not in the yyyy/MM/dd format
      */
     public void setOrderDate(String orderDate) throws Exception{
-        this.orderDate = validateOrderDate(orderDate);
+        if(validateOrderDate(orderDate)){
+            this.orderDate = dateFormat.parse(orderDate);
+        }
+        else throw new IllegalArgumentException("Invalid order date");
+    }
+
+    public void setStartAgainDate(Date startAgainDate) {
+        this.startAgainDate = startAgainDate;
     }
 
     /**
      * @return a Date object from a given String if it is in the correct format. Throws a ParseException when this is not
      * the case
      */
-    private Date validateOrderDate(String date) throws ParseException {
-        return dateFormat.parse(date);
+    private boolean validateOrderDate(String date) throws ParseException {
+        try {
+            dateFormat.parse(date);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
     }
-
-
 }

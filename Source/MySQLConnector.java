@@ -1,10 +1,5 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class MySQLConnector {
@@ -59,9 +54,19 @@ public class MySQLConnector {
 		return insertSucessfull;
 	}
 
-	/*
-	Queries the database for customers with a first or last name matching the parameters passed into this method and
-	returns them as an ArrayList of Customer objects.
+	/**
+	 * @todo Enable search by ID and establish full functionality in Customer and CLI classes
+	 * @param customerID
+	 * @return
+	 */
+	public ArrayList<Customer> searchCustomerByID(int customerID) {
+		return null;
+	}
+
+	/**
+	 * @param firstname the first name of the customer to be searched within the Customers table
+	 * @param lastName the last name of the customer to be searched within the Customers table
+	 * @return an ArrayList of Customer objects where the first and/or last name match those of the parameters
 	 */
 	public ArrayList<Customer> searchCustomerByName(String firstname, String lastName){
 		ArrayList<Customer> customers = new ArrayList<Customer>();
@@ -72,10 +77,9 @@ public class MySQLConnector {
 			preparedStatement.setString(2, "%"+lastName+"%");
 			resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()) {
-				customers.add(new Customer(resultSet.getInt(0), resultSet.getString(1),
-						resultSet.getString(2), resultSet.getString(3),
-						resultSet.getString(4), resultSet.getString(5),
-						resultSet.getInt(6)));
+				customers.add(new Customer(resultSet.getInt(1), resultSet.getString(2),
+						resultSet.getString(3), resultSet.getString(4), resultSet.getString(5),
+						resultSet.getString(6), resultSet.getInt(7)));
 			}
 		}
 		catch (Exception e) {
@@ -83,6 +87,30 @@ public class MySQLConnector {
 		}
         return customers;
     }
+
+	/**
+	 *
+	 * @param c the Customer object to be updated
+	 * @return the true/false depending on success of the update attempt in the database
+	 */
+	public boolean updateCustomerDetails(Customer c) {
+		try{
+			preparedStatement = connect.prepareStatement("update customers set firstName = ?, lastName = ?, " +
+					"phoneNumber = ?, address = ?, eircode = ?, deliveryAreaID = ? where customerID = ?");
+			preparedStatement.setString(1, c.getFirstName());
+			preparedStatement.setString(2, c.getLastName());
+			preparedStatement.setString(3, c.getPhoneNo());
+			preparedStatement.setString(4, c.getAddress());
+			preparedStatement.setString(5, c.getEircode());
+			preparedStatement.setInt(6, c.getDeliveryAreaId());
+			preparedStatement.setInt(7, c.getID());
+			preparedStatement.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	
 	public boolean insertDeliveryAreaDetails(DeliveryArea da) {
 		
