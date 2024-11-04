@@ -161,7 +161,7 @@ class SQLTest {
 	@Test
 	void updatePublicationTrue() throws Exception {
 		MySQLConnector dbLink = new MySQLConnector();
-		Publication obj = new Publication(1, "TUS Daily", "Abraham Lincoln", "Magazine", "Daily", 2.77);
+		Publication obj = new Publication(1, "TUS Daily", "Magazine", "Abraham Lincoln", "Daily", 2.77);
 		assertTrue(dbLink.updatePublicationDetails(obj));
 	}
 	
@@ -279,7 +279,7 @@ class SQLTest {
 	@Test
 	void searchCustomersTest() throws Exception {
 		MySQLConnector dbLink = new MySQLConnector();
-		assert(dbLink.searchCustomers().size() == 0);
+		assertTrue(dbLink.searchCustomers().size() > 0);
 	}
 	
 	/*
@@ -292,6 +292,6 @@ class SQLTest {
 	@Test
 	void searchDeliveryAreasTest() throws Exception {
 		MySQLConnector dbLink = new MySQLConnector();
-		assert(dbLink.searchDeliveryAreas().size() == 0);
+		assertTrue(dbLink.searchDeliveryAreas().size() > 0);
 	}
 }

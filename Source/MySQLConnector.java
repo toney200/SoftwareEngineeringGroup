@@ -11,7 +11,7 @@ public class MySQLConnector {
 	
 	final private String host ="localhost:3306";
 	final private String user = "root";
-	final private String password = "password";
+	final private String password = "root";
 	
 	
 	public MySQLConnector() throws Exception {
@@ -258,7 +258,7 @@ public class MySQLConnector {
 			preparedStatement.setInt(7, c.getID());
 			preparedStatement.executeUpdate();
 			return true;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -276,7 +276,7 @@ public class MySQLConnector {
 			preparedStatement.setInt(6, p.getPubID());
 			preparedStatement.executeUpdate();
 			return true;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -289,7 +289,7 @@ public class MySQLConnector {
 			preparedStatement.setInt(2, da.getDeliveryAreaID());
 			preparedStatement.executeUpdate();
 			return true;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -302,7 +302,7 @@ public class MySQLConnector {
 			preparedStatement.setInt(2, o.getOrderID());
 			preparedStatement.executeUpdate();
 			return true;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -361,7 +361,7 @@ public class MySQLConnector {
             preparedStatement.setInt(6, p.getPubID());
             preparedStatement.executeUpdate();
             return true;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
