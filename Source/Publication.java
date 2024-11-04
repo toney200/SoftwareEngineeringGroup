@@ -13,8 +13,43 @@ public class Publication {
 	  private String pubFrequency;
 	  private int pubID;
 	  
-	public Publication() {
-		
+	  public static MySQLConnector mySQLConnector;
+
+
+	    public Publication(){
+	
+		}
+
+	public Publication(int pubID, String pubName, String pubType, String pubAuthor, String pubFrequency, double pubCost) {
+
+		this.pubID = pubID;
+		this.pubName = pubName;
+		this.pubType = pubType;
+		this.pubAuthor = pubAuthor;
+		this.pubFrequency = pubFrequency;
+		this.pubCost = pubCost;
+
+	}
+	//Searches for publications within the database when a name is entered.
+	public static ArrayList<Publication> searchPublicationInDB(String pubName){
+		//Ensures SQL instance is initiated properly.
+		instantiateSQLInstance();
+		//Return search results
+		return mySQLConnector.searchPublication(pubName);
+	}
+
+	public static boolean updatePublicationInDB(Publication p){
+		return mySQLConnector.updatePublication(p);
+	}
+	//Initializes instance of SQL connector if none is found
+	private static void instantiateSQLInstance() {
+		try {
+			if(mySQLConnector == null){
+				mySQLConnector = new MySQLConnector();
+			}
+		} catch (Exception e) {
+			System.err.println("Error occured linking application to database. Ref instantiateSQLInstance() method.");
+		}
 	}
 	  //Getter and Setters
 	public int getPubID() {
