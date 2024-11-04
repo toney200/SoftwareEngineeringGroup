@@ -71,4 +71,12 @@ public class DeliveryArea {
         }
         return sqlConnector.updateDeliveryAreaDetails(updatedDeliveryArea); 
     }
+
+    @Override
+    public String toString() {
+        return "DeliveryArea{" +
+                "deliveryAreaID=" + deliveryAreaID +
+                ", deliveryAreaName='" + deliveryAreaName + '\'' +
+                '}';
+    }
 }
