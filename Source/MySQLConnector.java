@@ -167,7 +167,7 @@ public class MySQLConnector {
         return publications;
 	}
 	
-	public Publication searchPublicationID(int publicationID) {
+	public Publication searchPublicationByID(int publicationID) {
 		Publication foundPublication = null;
 
 		try{
