@@ -28,6 +28,7 @@ public class CLI {
                     switch (userSelect) {
                         case 0:
                             wantsToClose = true;
+                            validInput = true;
                             break;
                         case 1:
                             validInput = true;
@@ -302,6 +303,7 @@ public class CLI {
                         return;
                     case 2:
                         validInput = true;
+                        updateDeliveryArea();
                         return;
                     case 3:
                         validInput = true;
@@ -373,10 +375,76 @@ public class CLI {
 
 
     /**
-     *
+     *  Prompts the user to direct a search query for a specific DeliveryArea entity within the database. Uses the
+     *  attributes to populate a DeliveryArea object that may be edited and returned to the database.
      */
     private static void updateDeliveryArea() {
+        DeliveryArea da = new DeliveryArea();
         int userSelect = 0;
+        boolean validInput = false;
+        boolean affirmUpdate = false;
+
+        System.out.println("Select search criteria: ");
+        System.out.println("1. Search by ID     "+
+                "2. Show all");
+
+        while(!validInput) {
+            try{
+                userSelect = sc.nextInt();
+                switch (userSelect) {
+                    case 1:
+                        while(!affirmUpdate) {
+                            System.out.println("Enter Delivery Area ID: ");
+                            userSelect = sc.nextInt();
+                            da = DeliveryArea.readDeliveryAreaFromDB(userSelect);
+
+                            System.out.println("New Delivery Area name: ");
+                            da.setDeliveryAreaName(sc.nextLine());
+                            System.out.println("Confirm changes? [y/n]");
+                            if (sc.next().toLowerCase().charAt(0) == 'y') {
+                                affirmUpdate = true;
+                                if (DeliveryArea.updateDeliveryAreaInDB(da)) {
+                                    System.out.println("Delivery Area successfully updated.");
+                                } else {
+                                    System.out.println("Unable to update delivery area. Please try again.");
+                                }
+                            }
+                            if(sc.next().toLowerCase().charAt(0) == 'n') {
+                                System.out.println("Return to previous menu? [y/n]");
+                                if (sc.next().toLowerCase().charAt(0) == 'y') {
+                                    return;
+                                }
+                                else break;
+                            }
+                        }
+
+                    case 2:
+                        /*
+                        * @todo Enable ability to print List generated from DB query and select 1 to update
+                        *  ArrayList<DeliveryArea> deliveryAreas = DeliveryArea.methodToReturnDeliveryAreas();
+                        * for(DeliveryArea d : deliveryAreas){
+                        *   System.out.print(deliveryAreas.getIndexOf(d));
+                        *   System.out.println(d.toString());
+                        * }
+                        *
+                        * System.out.println("Type the number above the delivery area to select it.");
+                        * userSelect = sc.nextInt();
+                        * da = deliveryAreas.get
+                        *
+                         */
+                    default:
+                        break;
+                }
+            }
+            catch (InputMismatchException e){
+                System.out.println("Input error encountered. Please try again.");
+            }
+            catch(Exception e){
+                System.out.println("Unknown Exception");
+                return;
+            }
+        }
+        return;
     }
 
 

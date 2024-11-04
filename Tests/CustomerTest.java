@@ -1,14 +1,11 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import  org.junit.jupiter.api.*;
 import org.junit.jupiter.api.AssertionsKt;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class CustomerTest extends Customer{
     Customer testCust = new Customer();
-    
-    @SuppressWarnings("deprecation")
+
     @Test
     /*
      * Customer Test 1
@@ -18,7 +15,6 @@ public class CustomerTest extends Customer{
         assertEquals(false, testCust.validateFirstName("fnthrdsfytunmightjkiw"));
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     /*
      * Customer Test 2
@@ -28,7 +24,6 @@ public class CustomerTest extends Customer{
         assertEquals(false, testCust.validateFirstName("E"));
     }
 
-    @SuppressWarnings("deprecation")
     @Test 
     /*
      * Customer Test 3 
@@ -38,7 +33,6 @@ public class CustomerTest extends Customer{
         assertEquals(true, testCust.validateFirstName("John"));
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     /*
      * Customer Test 4
@@ -48,7 +42,6 @@ public class CustomerTest extends Customer{
         assertEquals(false, testCust.validateFirstName("S4oirse"));
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     /*
      * Customer Test 5
@@ -58,7 +51,6 @@ public class CustomerTest extends Customer{
         fail("Test fails");
     }
 
-    @SuppressWarnings("deprecation")
     @Test
      /*
      * Customer Test 6 
@@ -68,7 +60,6 @@ public class CustomerTest extends Customer{
         fail();
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     /*
      * Customer Test 7
@@ -88,33 +79,50 @@ public class CustomerTest extends Customer{
         assertEquals(false, testCust.validateLastName("K3nndedy"));
     }
 
-    @Test
-    /*
-     * Customer Test 9 
+    /**
+     * Customer Test 9
      * Should return true when valid eircodes are entered.
      */
+    @Test
     public void testValidateEircode001(){
         assertEquals(false, testCust.validateEircode("N37N6P6"));
     }
 
-    @Test
-    /*
+    /**
      * Customer Test 10
      * Should return false when passed in strings are shorter than seven characters
      */
-    public void testValidateEircode(){
+    @Test
+    public void testValidateEircode000(){
+        assertEquals(false, testCust.validateEircode("D014H789"));
         assertEquals(false, testCust.validateEircode("D01HJ1"));
     }
 
-    @SuppressWarnings("deprecation")
-    @Test
-    /*
-     * Customer Test 13
-     * Should return true when a valid phone number is passed in.e
+    /**
+     * Customer Test 11
+     * Should return true when a valid phone number is passed in.
      */
-    public void testValidatePhoneNo001(){
-        assertEquals(true, testCust.validatePhoneNo("0873925974"));
+    @Test
+    public void testValidatePhoneNo000(){
+        assertEquals(true, testCust.validatePhoneNo("0871234567"));
     }
 
+    /**
+     * Customer Test 12
+     * Phone numbers more, or less, than 10 characters should be rejected.
+     */
+    @Test
+    public void testValidatePhoneNo001(){
+        assertFalse(testCust.validatePhoneNo("083123"));
+        assertFalse(testCust.validatePhoneNo(("08911111111")));
+    }
 
+    /**
+     * Customer Test 13
+     * Customer phone numbers should be rejected if they contain non-numeric characters.
+     */
+    @Test
+    public void testValidatePhoneNo002(){
+
+    }
 }
