@@ -51,6 +51,14 @@ public class Customer {
         }
     }
 
+
+    public static void closeSQLConnection(){
+        if(sqlConnector != null){
+            sqlConnector.closeDB();
+        }
+        sqlConnector = null;
+    }
+
     /**
      * @param customer
      * customer object to be inserted into database.

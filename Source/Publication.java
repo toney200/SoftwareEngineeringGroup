@@ -18,6 +18,12 @@ public class Publication {
 	  
 	  public static MySQLConnector mySQLConnector;
 
+	  public static void closeSQLConnector() {
+		  if (mySQLConnector != null) {
+			  mySQLConnector.closeDB();
+		  }
+		  mySQLConnector = null;
+	  }
 
 	    public Publication(){
 	

@@ -50,7 +50,9 @@ public class CLI {
                 }
             }
         }
-        System.exit(0);
+        Customer.closeSQLConnection();
+        Publication.closeSQLConnector();
+        System.exit(130);
     }
 
 
@@ -301,8 +303,11 @@ public class CLI {
                     case 2:
                         validInput = true;
                         return;
-                    case 99:
+                    case 3:
                         validInput = true;
+                        readDeliveryArea();
+                        return;
+                    case 99:
                         return;
                     default: // loops again
                         break;
@@ -346,6 +351,35 @@ public class CLI {
     }
 
 
+    /**
+     * Prints the associated delivery area according to user entered values.
+     */
+    private static void readDeliveryArea(){
+        int deliveryAreaID = 0;
+        boolean validInput = false;
+
+        while(!validInput) {
+            try {
+                System.out.println("Enter the ID number of the delivery area: ");
+                deliveryAreaID = sc.nextInt();
+                System.out.println(DeliveryArea.readDeliveryAreaFromDB(deliveryAreaID).toString());
+                validInput = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Value entered is invalid. Please try again.");
+            }
+        }
+        return;
+    }
+
+
+    /**
+     *
+     */
+    private static void updateDeliveryArea() {
+        int userSelect = 0;
+    }
+
+
 
 //  *** ORDER METHODS ***
 
@@ -374,8 +408,8 @@ public class CLI {
 
 //  *** PUBLICATION METHODS ***
 
-static void publicationRouting() {
-    	int userSelect = 0;
+    static void publicationRouting() {
+        int userSelect = 0;
         boolean validInput = false;
 
         while(!validInput) { // Loops until the Scanner receives a valid input.
@@ -462,7 +496,7 @@ static void publicationRouting() {
         }
     }
 
- public static void updatePublication() {
+    public static void updatePublication() {
         ArrayList<Publication> publicationList;
         String pubName;
         String pubAuthor;
@@ -585,9 +619,9 @@ static void publicationRouting() {
 
         }
     }
-/*
+/**
 * Retrieve information for publications when title is entered.
-* */
+*/
     public static void retrievePublication() {
         ArrayList<Publication> publicationList;
         String pubName;
