@@ -8,6 +8,12 @@ public class DeliveryArea {
     public DeliveryArea() {
 
     }
+    
+    public DeliveryArea(int id, String name) {
+    	deliveryAreaID = id;
+    	deliveryAreaName = name;
+    }
+    
         //Getters and setters
     public int getDeliveryAreaID() {
         return this.deliveryAreaID;

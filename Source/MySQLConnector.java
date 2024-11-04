@@ -67,8 +67,123 @@ public class MySQLConnector {
 	 * @param customerID
 	 * @return
 	 */
-	public ArrayList<Customer> searchCustomerByID(int customerID) {
-		return null;
+	public Customer searchCustomerByID(int customerID) {
+		Customer foundCustomer = null;
+
+		try{
+			preparedStatement = connect.prepareStatement("Select * From customers Where customerID = ?");
+			preparedStatement.setInt(1, customerID);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				foundCustomer = new Customer(resultSet.getInt(1), resultSet.getString(2),
+						resultSet.getString(3), resultSet.getString(4), resultSet.getString(5),
+						resultSet.getString(6), resultSet.getInt(7));
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+        return foundCustomer;
+	}
+	
+	/**
+	 * @todo Enable search for all customers and establish full functionality in Customer and CLI classes
+	 * @return List of customers
+	 */
+	public ArrayList<Customer> searchCustomers() {
+		ArrayList<Customer> customers = new ArrayList<Customer>();
+
+		try{
+			preparedStatement = connect.prepareStatement("select * from customers");
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				customers.add(new Customer(resultSet.getInt(1), resultSet.getString(2),
+						resultSet.getString(3), resultSet.getString(4), resultSet.getString(5),
+						resultSet.getString(6), resultSet.getInt(7)));
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+        return customers;
+	}
+	
+	/**
+	 * @todo Enable search for all delivery areas and establish full functionality in DeliveryArea and CLI classes
+	 * @return List of delivery areas
+	 */
+	public ArrayList<DeliveryArea> searchDeliveryAreas() {
+		ArrayList<DeliveryArea> deliveryAreas = new ArrayList<DeliveryArea>();
+
+		try{
+			preparedStatement = connect.prepareStatement("select * from deliveryAreas");
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				deliveryAreas.add(new DeliveryArea(resultSet.getInt(1), resultSet.getString(2)));
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+        return deliveryAreas;
+	}
+	
+	public DeliveryArea searchDeliveryAreaByID(int deliveryAreaID) {
+		DeliveryArea foundDeliveryArea = null;
+
+		try{
+			preparedStatement = connect.prepareStatement("Select * From deliveryAreas Where deliveryAreaID = ?");
+			preparedStatement.setInt(1, deliveryAreaID);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				foundDeliveryArea = new DeliveryArea(resultSet.getInt(1), resultSet.getString(2));
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+        return foundDeliveryArea;
+	}
+	
+	/**
+	 * @todo Enable search for all publications and establish full functionality in Publication and CLI classes
+	 * @return List of publications
+	 */
+	public ArrayList<Publication> searchPublications() {
+		ArrayList<Publication> publications = new ArrayList<Publication>();
+
+		try{
+			preparedStatement = connect.prepareStatement("select * from publications");
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				publications.add(new Publication(resultSet.getInt(1), resultSet.getString(2),
+						resultSet.getString(3), resultSet.getString(4), resultSet.getString(5),
+						resultSet.getDouble(6)));
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+        return publications;
+	}
+	
+	public Publication searchPublicationID(int publicationID) {
+		Publication foundPublication = null;
+
+		try{
+			preparedStatement = connect.prepareStatement("Select * From publications Where publicationID = ?");
+			preparedStatement.setInt(1, publicationID);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				foundPublication = new Publication(resultSet.getInt(1), resultSet.getString(2),
+						resultSet.getString(3), resultSet.getString(4), resultSet.getString(5),
+						resultSet.getDouble(6));
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+        return foundPublication;
 	}
 
 	/**

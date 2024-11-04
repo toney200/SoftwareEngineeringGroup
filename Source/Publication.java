@@ -16,6 +16,16 @@ public class Publication {
 	public Publication() {
 		
 	}
+	
+	public Publication(int id, String name, String author, String type, String frequency, double cost) {
+		pubID = id;
+		pubName = name;
+		pubAuthor = author;
+		pubType = type;
+		pubFrequency = frequency;
+		pubCost = cost;
+	}
+	
 	  //Getter and Setters
 	public int getPubID() {
 		return this.pubID;
