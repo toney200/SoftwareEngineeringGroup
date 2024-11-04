@@ -11,7 +11,7 @@ public class MySQLConnector {
 	
 	final private String host ="localhost:3306";
 	final private String user = "root";
-	final private String password = "password";
+	final private String password = "root";
 	
 	
 	public MySQLConnector() throws Exception {
@@ -185,6 +185,35 @@ public class MySQLConnector {
 		}
         return foundPublication;
 	}
+	
+    public ArrayList<Publication> searchPublicationByName(String title){
+        ArrayList<Publication> publication = new ArrayList<Publication>();
+        boolean searchSuccessfull = true;
+
+        try{
+            preparedStatement = connect.prepareStatement("select * from publications where title like ?");
+            preparedStatement.setString(1, "%"+title+"%");
+            resultSet = preparedStatement.executeQuery();
+            // Create a new Publication object using data from the current row of the resultSet
+            while(resultSet.next()) {
+                publication.add(new Publication(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getDouble(6)));
+            }
+
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            searchSuccessfull = false;
+        }
+
+        return publication;
+
+    }
 
 	/**
 	 * @param firstname the first name of the customer to be searched within the Customers table

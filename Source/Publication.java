@@ -3,6 +3,9 @@
  * This class represents Publications, the details include: cost, name, type, author, frequency and id number.
  * It includes validation methods to ensure data integrity. 
  */
+
+import java.util.ArrayList;
+
 public class Publication {
 	
 	//Class Variables
@@ -35,7 +38,7 @@ public class Publication {
 		//Ensures SQL instance is initiated properly.
 		instantiateSQLInstance();
 		//Return search results
-		return mySQLConnector.searchPublication(pubName);
+		return mySQLConnector.searchPublicationByName(pubName);
 	}
 
 	public static boolean updatePublicationInDB(Publication p){
@@ -50,15 +53,6 @@ public class Publication {
 		} catch (Exception e) {
 			System.err.println("Error occured linking application to database. Ref instantiateSQLInstance() method.");
 		}
-	}
-	
-	public Publication(int id, String name, String author, String type, String frequency, double cost) {
-		pubID = id;
-		pubName = name;
-		pubAuthor = author;
-		pubType = type;
-		pubFrequency = frequency;
-		pubCost = cost;
 	}
 	
 	  //Getter and Setters
@@ -214,4 +208,13 @@ public class Publication {
 		return false;
 	}
 	
+	@Override
+	public String toString() {
+		return "Publication Name: " + this.pubName + " "
+				+ "\nPublication Type: " + this.pubType + " "
+				+ "\nPublication Author: " + this.pubAuthor + " "
+				+ "\nPublication Frequency: " + this.pubFrequency + " "
+				+ "\nPublication Cost: " + this.pubCost
+				+ "\n_______________________________________________________________________";
+	}
 }

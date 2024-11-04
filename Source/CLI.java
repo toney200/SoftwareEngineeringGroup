@@ -35,8 +35,7 @@ public class CLI {
                             break;
                         case 3:
                             validInput = true;
-                            Publication newPub = new Publication();
-                            publicationCreation(newPub);
+                            publicationRouting();
                             break;
                         case 4:
                             validInput = true;

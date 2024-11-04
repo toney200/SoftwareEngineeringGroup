@@ -1,5 +1,3 @@
-package DeliveryArea;
-
 public class DeliveryArea {
 
     // Class Variables
@@ -63,7 +61,7 @@ public class DeliveryArea {
         if (sqlConnector == null) {
             instantiateSQLInstance();
         }
-        return sqlConnector.getDeliveryAreaDetailsById(id); 
+        return sqlConnector.searchDeliveryAreaByID(id); 
     }
 
     // Update method to modify an existing DeliveryArea in the database
