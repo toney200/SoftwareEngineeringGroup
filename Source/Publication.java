@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 
 /*
  * This class represents Publications, the details include: cost, name, type, author, frequency and id number.
@@ -13,40 +12,10 @@ public class Publication {
 	  private String pubAuthor;
 	  private String pubFrequency;
 	  private int pubID;
-
-	  public static MySQLConnector mySQLConnector;
-
-
-    public Publication(){
-
+	  
+	public Publication() {
+		
 	}
-
-	public Publication(int pubID, String pubName, String pubType, String pubAuthor, String pubFrequency, double pubCost) {
-
-		this.pubID = pubID;
-		this.pubName = pubName;
-		this.pubType = pubType;
-		this.pubAuthor = pubAuthor;
-		this.pubFrequency = pubFrequency;
-		this.pubCost = pubCost;
-
-	}
-
-	public static ArrayList<Publication> searchPublicationInDB(String pubName){
-		instantiateSQLInstance();
-		return mySQLConnector.searchPublication(pubName);
-	}
-
-	private static void instantiateSQLInstance() {
-		try {
-			if(mySQLConnector == null){
-				mySQLConnector = new MySQLConnector();
-			}
-		} catch (Exception e) {
-			System.err.println("Error occured linking application to database. Ref instantiateSQLInstance() method.");
-		}
-	}
-
 	  //Getter and Setters
 	public int getPubID() {
 		return this.pubID;
@@ -198,16 +167,6 @@ public class Publication {
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public String toString() {
-		return "Publication Name: " + this.pubName + " "
-				+ "\nPublication Type: " + this.pubType + " "
-				+ "\nPublication Author: " + this.pubAuthor + " "
-				+ "\nPublication Frequency: " + this.pubFrequency + " "
-				+ "\nPublication Cost: " + this.pubCost
-				+ "\n_______________________________________________________________________";
 	}
 	
 }
