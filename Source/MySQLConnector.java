@@ -11,7 +11,7 @@ public class MySQLConnector {
 	
 	final private String host ="localhost:3306";
 	final private String user = "root";
-	final private String password = "root";
+	final private String password = "password";
 	
 	
 	public MySQLConnector() throws Exception {
