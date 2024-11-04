@@ -103,8 +103,8 @@ public class MySQLConnector {
 	 */
 	public boolean updateCustomerDetails(Customer c) {
 		try{
-			preparedStatement = connect.prepareStatement("update customers set firstName = ?, lastName = ?, " +
-					"phoneNumber = ?, address = ?, eircode = ?, deliveryAreaID = ? where customerID = ?");
+			preparedStatement = connect.prepareStatement("Update customers Set firstName = ?, lastName = ?, " +
+					"phoneNumber = ?, address = ?, eircode = ?, deliveryAreaID = ? Where customerID = ?");
 			preparedStatement.setString(1, c.getFirstName());
 			preparedStatement.setString(2, c.getLastName());
 			preparedStatement.setString(3, c.getPhoneNo());
@@ -112,6 +112,50 @@ public class MySQLConnector {
 			preparedStatement.setString(5, c.getEircode());
 			preparedStatement.setInt(6, c.getDeliveryAreaId());
 			preparedStatement.setInt(7, c.getID());
+			preparedStatement.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean updatePublicationDetails(Publication p) {
+		try{
+			preparedStatement = connect.prepareStatement("Update publications Set title = ?, author = ?, " +
+					"type = ?, frequency = ?, cost = ? Where publicationID = ?");
+			preparedStatement.setString(1, p.getPubName());
+			preparedStatement.setString(2, p.getPubAuthor());
+			preparedStatement.setString(3, p.getPubType());
+			preparedStatement.setString(4, p.getPubFrequency());
+			preparedStatement.setDouble(5, p.getPubCost());
+			preparedStatement.setInt(6, p.getPubID());
+			preparedStatement.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean updateDeliveryAreaDetails(DeliveryArea da) {
+		try{
+			preparedStatement = connect.prepareStatement("Update deliveryAreas Set name = ? Where DeliveryAreaID = ?");
+			preparedStatement.setString(1, da.getDeliveryAreaName());
+			preparedStatement.setInt(2, da.getDeliveryAreaID());
+			preparedStatement.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean updateOrderDetails(Order o) {
+		try{
+			preparedStatement = connect.prepareStatement("Update orders Set orderDate = ?, startAgainDate = ? Where orderID = ?");
+			preparedStatement.setObject(1, o.getOrderDate());
+			preparedStatement.setInt(2, o.getOrderID());
 			preparedStatement.executeUpdate();
 			return true;
 		} catch (SQLException e) {

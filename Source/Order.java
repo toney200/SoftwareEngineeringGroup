@@ -8,7 +8,27 @@ public class Order {
     private int customerID;             // each order must have a corresponding customer
     private int publicationID;          // each order is only tied to one publication
     private Date startAgainDate;        // orders can be placed on hold. This date represents the end of that hold
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    public int getOrderID() {
+		return orderID;
+	}
+
+	public Date getOrderDate() {
+		return orderDate;
+	}
+
+	public int getCustomerID() {
+		return customerID;
+	}
+
+	public int getPublicationID() {
+		return publicationID;
+	}
+
+	public Date getStartAgainDate() {
+		return startAgainDate;
+	}
+
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
     /**
      * @param customerID the ID of the customer to which this order is tied
