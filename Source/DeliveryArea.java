@@ -72,6 +72,14 @@ public class DeliveryArea {
         return sqlConnector.updateDeliveryAreaDetails(updatedDeliveryArea); 
     }
 
+    // Method to retrieve all DeliveryAreas from the database
+    public static ArrayList<DeliveryArea> getAllDeliveryAreasFromDB() {
+        if (sqlConnector == null) {
+            instantiateSQLInstance();
+        }
+        return MySQLConnector.searchDeliveryArea();
+    }
+
     @Override
     public String toString() {
         return "DeliveryArea{" +
