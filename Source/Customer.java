@@ -25,7 +25,7 @@ public class Customer {
         }
     }
 
-    public Customer(int id, String firstName, String lastName, String address, String eircode, String phoneNo, int deliveryAreaID){
+    public Customer(int id, String firstName, String lastName, String phoneNo, String address, String eircode, int deliveryAreaID){
         if(sqlConnector == null){
             instantiateSQLInstance();
         }
@@ -42,12 +42,12 @@ public class Customer {
     /**
      * Creates a single instance of the SQL Connector class for the Customer class to make exclusive use of.
      */
-    private void instantiateSQLInstance() {
+    private static void instantiateSQLInstance() {
         try {
             sqlConnector = new MySQLConnector();
         }
         catch(Exception e){
-            System.err.println("Error occured linking application to database. Ref instantiateSQLInstance() method.");
+            System.err.println("Error occurred linking application to database. Ref Customer.instantiateSQLInstance() method.");
         }
     }
 
@@ -63,15 +63,22 @@ public class Customer {
     /**
      * @param firstname customer first name as entered by the user
      * @param lastname customer last name as entered by the user
-     * @return the list of Customer objects that contain either parameter as first/last name member variables
+     * @return the list of Customer objects that contain either parameter as attributes
      */
-    public static ArrayList<Customer> searchCustomerInDB(String firstname, String lastname){
+    public static ArrayList<Customer> searchCustomerByName(String firstname, String lastname){
+        if (sqlConnector == null) {
+            instantiateSQLInstance();
+        }
         return sqlConnector.searchCustomerByName(firstname, lastname);
     }
 
+    /**
+     * Takes a Customer object and updates the relevant table entry in the database
+     * @param customer
+     * @return the success/failure of the SQL update attempt
+     */
     public static boolean updateCustomerInDB(Customer customer){
-        // @todo insert method that updates SQL database from the MySQLConnector class
-        return false;
+        return sqlConnector.updateCustomerDetails(customer);
     }
 
     
@@ -127,29 +134,37 @@ public class Customer {
     	this.deliveryAreaID = id;
     }
 
-    public void setFirstName(String name){
+    public void setFirstName(String name) throws IllegalArgumentException{
         if (validateFirstName(name) == true){
             this.firstName = name;
+        }
+        else{
+            throw new IllegalArgumentException();
         }
     }
 
 
-    public void setLastName(String name) throws Exception{
+    public void setLastName(String name) throws IllegalArgumentException{
         if (validateLastName(name) == true){
             this.lastName = name;
         }
         else {
-            throw new Exception();
+            throw new IllegalArgumentException();
         }
     }
 
-    
-    public void setPhoneNo(String phoneNumber) throws Exception{
-        if(validatePhoneNo(phoneNumber) == true){
+
+    /**
+     * Sets the phone number member variable of an instance of Customer
+     * @param phoneNumber the Customer phone number
+     * @throws IllegalArgumentException
+     */
+    public void setPhoneNo(String phoneNumber) throws IllegalArgumentException{
+        if(validatePhoneNo(phoneNumber)){
             this.phoneNo = phoneNumber;
         }
         else {
-            throw new Exception();
+            throw new IllegalArgumentException();
         }
         
     }
@@ -160,12 +175,12 @@ public class Customer {
     }
 
 
-    public void setEircode(String eircode) throws Exception{
+    public void setEircode(String eircode) throws IllegalArgumentException{
         if (validateEircode(eircode)){
             this.eircode = eircode;
         }
         else {
-            throw new Exception();
+            throw new IllegalArgumentException();
         }
     }
 
@@ -235,10 +250,7 @@ public class Customer {
     protected boolean validateEircode(String eircode){
         if (eircode != null){
             if(eircode.length() == 7){
-                if (eircode.matches(EIRCODE_REGEX)){
-                    return true;
-                }
-                return false;
+                return eircode.matches(EIRCODE_REGEX);
             }
             return false;
         }
@@ -272,7 +284,8 @@ public class Customer {
      */
     @Override
     public String toString() {
-        return "Name: " + this.firstName + " " + this.lastName +
+        return "ID: " + this.id +
+                "\nName: " + this.firstName + " " + this.lastName +
                 "\nPhone No. : " + this.phoneNo +
                 "\nAddress: " + this.address + ", " + this.eircode +
                 "\nDelivery Area: " + this.deliveryAreaID;

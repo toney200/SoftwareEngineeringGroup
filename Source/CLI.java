@@ -2,6 +2,10 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Contains all the necessary functionality to provide a command line interface to the user. Handles switching of user
+ * interaction menus that link to functionality within external classes.
+ */
 public class CLI {
     static Scanner sc = new Scanner(System.in);
     static boolean wantsToClose = false;        // triggers the application to close when set to true via user input
@@ -73,17 +77,20 @@ public class CLI {
                 System.out.println("Select from the following options: \n");
                 System.out.println("1. Create a new customer    " +
                         "2. Edit a customer profile     " +
+                        "3. View a customer profile     " +
                         "99. Exit to previous selection");
 
                 userSelect = sc.nextInt();
                 switch (userSelect) {
                     case 1:
                         Customer newCustomer = new Customer();
-                        customerCreation(newCustomer);
-                        return;
+                        createCustomer(newCustomer);
+                        break;
                     case 2:
+                        updateCustomer();
                         break;
                     case 3:
+                        readCustomer();
                         break;
                     case 99:
                         return;
@@ -102,7 +109,7 @@ public class CLI {
      * @param newCustomer
      * Takes in all the member variables of a Customer object via user prompt and returns when finished.
      */
-    static void customerCreation(Customer newCustomer){
+    static void createCustomer(Customer newCustomer){
     	try{
 	    	boolean validInput = false;
 	
@@ -145,31 +152,123 @@ public class CLI {
 
 
     /**
-     * Calls Customer.searchCustomerInDB() for a list of customers based on user selection.
+     * Prompts the user for input that may be used as a database query to find and display Customers that match the
+     * given input.
+     */
+    private static void readCustomer(){
+        ArrayList<Customer> customers;
+        int userSelect = 0;
+        String firstName;
+        String lastName;
+
+        System.out.println("Please enter the first name of the customer: ");
+        firstName = sc.next();
+        System.out.println("Please enter the last name of the customer: ");
+        lastName = sc.next();
+
+        customers = Customer.searchCustomerByName(firstName, lastName);
+        System.out.println("The following results match your search: ");
+        for(Customer customer : customers){
+            System.out.println(customer.toString() + "\n");
+        }
+    }
+
+
+    /**
+     * Calls Customer.searchCustomerInDB() for a list of customers based on user selection. User is prompted to select
+     * customer details they would like to change and these are passed to Customer for update within the database
      */
     private static void updateCustomer(){
         ArrayList<Customer> customerList;
         String firstName;
         String lastName;
+        boolean affirmSelection = false;
         int userSelect = 0;
 
+        // User provides the first and last name of a customer to query database for matches
         System.out.println("Enter the first and last name of the customer you wish to change details for: \n");
         firstName = sc.next();
         lastName = sc.next();
-        customerList = Customer.searchCustomerInDB(firstName, lastName);
+        customerList = Customer.searchCustomerByName(firstName, lastName);
 
+        // Lists all the returned customer objects based on provided first and last name
         for(Customer customer : customerList){
             System.out.println(customerList.indexOf(customer) + 1);
             System.out.println(customer.toString() + "\n");
         }
-        System.out.println("Select the customer you would like to change the details for");
+
+        // User selects the customer to be updated
+        System.out.println("Select the customer you would like to change the details for by typing the number above them");
         userSelect = sc.nextInt();
-        if (userSelect < 1 || userSelect >= customerList.size()){
+        if (userSelect < 1 || userSelect > customerList.size()){
             System.out.println("Invalid input.");
             return;
         }
         Customer customerSelected = customerList.get(userSelect - 1);
 
+        /*
+         * Takes the Customer selected by the user and presents the option to update all or certain attributes.
+         * Leaves details unchanged if a null value is entered.
+         */
+        userSelect = 0;
+        System.out.println("Change any of the following attributes. Press Enter to leave an attribute as is");
+        while (!affirmSelection) {
+            try {
+                System.out.println("First name: ");
+                String firstNameInput = sc.nextLine();
+                if (!firstNameInput.isEmpty()) {
+                    customerSelected.setFirstName(firstNameInput);
+                }
+
+                System.out.println("Last name: ");
+                String lastNameInput = sc.nextLine();
+                if (!lastNameInput.isEmpty()) {
+                    customerSelected.setLastName(lastNameInput);
+                }
+
+                System.out.println("Phone number: ");
+                String phoneNumberInput = sc.nextLine();
+                if (!phoneNumberInput.isEmpty()) {
+                    customerSelected.setPhoneNo(phoneNumberInput);
+                }
+
+                System.out.println("Customer address: ");
+                String addressInput = sc.nextLine();
+                if (!addressInput.isEmpty()) {
+                    customerSelected.setAddress(addressInput);
+                }
+
+                System.out.println("Customer eircode: ");
+                String eircodeInput = sc.nextLine();
+                if (!eircodeInput.isBlank()) {
+                    customerSelected.setEircode(eircodeInput.trim());
+                }
+
+                System.out.println("Delivery Area ID: ");
+                String deliveryAreaIdInput = sc.nextLine();
+                if (!deliveryAreaIdInput.isEmpty()) {
+                    int deliveryAreaId = Integer.parseInt(deliveryAreaIdInput);
+                    customerSelected.setDeliveryAreaId(deliveryAreaId);
+                }
+
+                System.out.println("Confirm changes? [y/n]");
+                if (sc.next().toLowerCase().charAt(0) == 'y') {
+                    affirmSelection = true;
+                    if(Customer.updateCustomerInDB(customerSelected)){
+                        System.out.println("Customer successfully updated");
+                    }
+                    else {
+                        System.out.println("Unable to update customer profile. Please try again.");
+                        return;
+                    }
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error encountered when changing customer information. Returning to previous menu.");
+                return;
+            }
+        }
+        return;
     }
 
 
@@ -180,8 +279,8 @@ public class CLI {
 
 
     /**
-      * Directs the user to differing functions involved in the creation, modification or deletion
-      * of DeliveryArea entities within the underlying database
+     * Directs the user to differing functions involved in the creation and manipulation of delivery area related
+     * features.
      */
     private static void deliveryAreaRouting(){
         int userSelect = 0;
@@ -189,38 +288,41 @@ public class CLI {
 
         while(!validInput) { // Loops until the Scanner receives a valid input.
             try {
-                validInput = true;
 
                 System.out.println("Select from the following options: \n");
                 System.out.println("1. Create a new delivery area    " +
-                        "2. View an existing delivery area     " +
+                        "2. Edit a delivery area     " +
+                        "3. View an existing delivery area     " +
                         "99. Exit to previous selection");
 
                 userSelect = sc.nextInt();
                 switch (userSelect) {
                     case 1:
-                        deliveryAreaCreation();
+                        validInput = true;
+                        createDeliveryArea();
                         return;
                     case 2:
+                        validInput = true;
                         return;
                     case 99:
+                        validInput = true;
                         return;
-                    default:
-                        return;
+                    default: // loops again
+                        break;
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Please enter a number from the aforementioned options!");
                 sc.nextLine();
+                validInput = false;
             }
         }
     }
 
 
-    /*
-    Creates an instance of the DeliveryArea class and populates its private member variables with user-defined values.
-    Calls
+    /**
+     * Creates an instance of the DeliveryArea class and populates its private member variables with user-defined values
      */
-    static void deliveryAreaCreation(){
+    static void createDeliveryArea(){
         DeliveryArea da = new DeliveryArea();
         boolean validInput = false;
         try {
@@ -251,6 +353,9 @@ public class CLI {
 //  *** ORDER METHODS ***
 
 
+    /**
+     * Directs the user to the desired functionality related to orders
+     */
     private static void orderRouting(){
         int userSelect = 0;
         boolean validInput = false;
@@ -260,6 +365,11 @@ public class CLI {
             System.out.println("1. Create new order     " +
                     "2. Place a scheduled order on hold     " +
                     "99. Exit to previous selection");
+
+            userSelect = sc.nextInt();
+            switch (userSelect) {
+
+            }
         }
     }
 
@@ -313,7 +423,8 @@ public class CLI {
      * of the class to the MySQLConnector class to be passed to SQL database.
      */
     static void publicationCreation(Publication newPublication){
-    	try {
+        // @todo remove direct link from CLI to MySQLConnector
+        try {
     		MySQLConnector sql = new MySQLConnector();
     		boolean validInput = false;
     		
@@ -437,9 +548,8 @@ public class CLI {
 
 //  *** MAIN ***
 
-    /*
-    Calls a new object of the CLI(Command Line Interface) class. Catches unforseen exceptions and notifies the user
-    before printing the details of where the exception took place.
+    /**
+     * Calls a new object of the CLI(Command Line Interface) class
      */
     public static void main(String[] args) {
         System.out.println("Welcome...");
@@ -447,7 +557,8 @@ public class CLI {
             new CLI();
         }
         catch(Exception e){
-            System.out.println("Oops! We ran into an unknown issue! Please restart the application.");
+            // we should never be here
+            System.err.println("Oops! We ran into an unknown issue! Please restart the application.");
             e.printStackTrace();
         }
     }
