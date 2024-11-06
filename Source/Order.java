@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Order {
     private int orderID;                // this is a unique identifier attached to each individual order
-    private Date orderDate;             // this is the date the order to be delivered, not when the order was created
+    private Date orderDate;             // date the order was created
     private int customerID;             // each order must have a corresponding customer
     private int publicationID;          // each order is only tied to one publication
     private Date startAgainDate;        // orders can be placed on hold. This date represents the end of that hold

@@ -11,7 +11,7 @@ public class MySQLConnector {
 	
 	final private String host ="localhost:3306";
 	final private String user = "root";
-	final private String password = "password";
+	final private String password = "root";
 	
 	
 	public MySQLConnector() throws Exception {
@@ -167,7 +167,7 @@ public class MySQLConnector {
         return publications;
 	}
 	
-	public Publication searchPublicationID(int publicationID) {
+	public Publication searchPublicationByID(int publicationID) {
 		Publication foundPublication = null;
 
 		try{
@@ -185,6 +185,35 @@ public class MySQLConnector {
 		}
         return foundPublication;
 	}
+	
+    public ArrayList<Publication> searchPublicationByName(String title){
+        ArrayList<Publication> publication = new ArrayList<Publication>();
+        boolean searchSuccessfull = true;
+
+        try{
+            preparedStatement = connect.prepareStatement("select * from publications where title like ?");
+            preparedStatement.setString(1, "%"+title+"%");
+            resultSet = preparedStatement.executeQuery();
+            // Create a new Publication object using data from the current row of the resultSet
+            while(resultSet.next()) {
+                publication.add(new Publication(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getDouble(6)));
+            }
+
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            searchSuccessfull = false;
+        }
+
+        return publication;
+
+    }
 
 	/**
 	 * @param firstname the first name of the customer to be searched within the Customers table
@@ -229,7 +258,7 @@ public class MySQLConnector {
 			preparedStatement.setInt(7, c.getID());
 			preparedStatement.executeUpdate();
 			return true;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -247,7 +276,7 @@ public class MySQLConnector {
 			preparedStatement.setInt(6, p.getPubID());
 			preparedStatement.executeUpdate();
 			return true;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -260,7 +289,7 @@ public class MySQLConnector {
 			preparedStatement.setInt(2, da.getDeliveryAreaID());
 			preparedStatement.executeUpdate();
 			return true;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -273,7 +302,7 @@ public class MySQLConnector {
 			preparedStatement.setInt(2, o.getOrderID());
 			preparedStatement.executeUpdate();
 			return true;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -319,6 +348,54 @@ public class MySQLConnector {
 	
 		return insertSucessfull;
 	}
+
+	 public boolean updatePublication(Publication p) {
+        try{
+            preparedStatement = connect.prepareStatement("update publications set title = ?, author = ?, " +
+                    "type = ?, frequency = ?, cost = ? where publicationID = ?");
+            preparedStatement.setString(1, p.getPubName());
+            preparedStatement.setString(2, p.getPubAuthor());
+            preparedStatement.setString(3, p.getPubType());
+            preparedStatement.setString(4, p.getPubFrequency());
+            preparedStatement.setDouble(5, p.getPubCost());
+            preparedStatement.setInt(6, p.getPubID());
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public ArrayList<Publication> searchPublication(String title){
+        ArrayList<Publication> publication = new ArrayList<Publication>();
+        boolean searchSuccessfull = true;
+
+        try{
+            preparedStatement = connect.prepareStatement("select * from publications where title like ?");
+            preparedStatement.setString(1, "%"+title+"%");
+            resultSet = preparedStatement.executeQuery();
+            // Create a new Publication object using data from the current row of the resultSet
+            while(resultSet.next()) {
+                publication.add(new Publication(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getDouble(6)));
+            }
+
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            searchSuccessfull = false;
+        }
+
+        return publication;
+
+    }
+
 	
 //	public boolean insertOrderDetails(Order p) {
 //		

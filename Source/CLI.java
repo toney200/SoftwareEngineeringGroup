@@ -28,6 +28,7 @@ public class CLI {
                     switch (userSelect) {
                         case 0:
                             wantsToClose = true;
+                            validInput = true;
                             break;
                         case 1:
                             validInput = true;
@@ -35,8 +36,7 @@ public class CLI {
                             break;
                         case 3:
                             validInput = true;
-                            Publication newPub = new Publication();
-                            publicationCreation(newPub);
+                            publicationRouting();
                             break;
                         case 4:
                             validInput = true;
@@ -51,7 +51,9 @@ public class CLI {
                 }
             }
         }
-        System.exit(0);
+        Customer.closeSQLConnection();
+        Publication.closeSQLConnector();
+        System.exit(130);
     }
 
 
@@ -301,9 +303,13 @@ public class CLI {
                         return;
                     case 2:
                         validInput = true;
+                        updateDeliveryArea();
+                        return;
+                    case 3:
+                        validInput = true;
+                        readDeliveryArea();
                         return;
                     case 99:
-                        validInput = true;
                         return;
                     default: // loops again
                         break;
@@ -347,6 +353,101 @@ public class CLI {
     }
 
 
+    /**
+     * Prints the associated delivery area according to user entered values.
+     */
+    private static void readDeliveryArea(){
+        int deliveryAreaID = 0;
+        boolean validInput = false;
+
+        while(!validInput) {
+            try {
+                System.out.println("Enter the ID number of the delivery area: ");
+                deliveryAreaID = sc.nextInt();
+                System.out.println(DeliveryArea.readDeliveryAreaFromDB(deliveryAreaID).toString());
+                validInput = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Value entered is invalid. Please try again.");
+            }
+        }
+        return;
+    }
+
+
+    /**
+     *  Prompts the user to direct a search query for a specific DeliveryArea entity within the database. Uses the
+     *  attributes to populate a DeliveryArea object that may be edited and returned to the database.
+     */
+    private static void updateDeliveryArea() {
+        DeliveryArea da = new DeliveryArea();
+        int userSelect = 0;
+        boolean validInput = false;
+        boolean affirmUpdate = false;
+
+        System.out.println("Select search criteria: ");
+        System.out.println("1. Search by ID     "+
+                "2. Show all");
+
+        while(!validInput) {
+            try{
+                userSelect = sc.nextInt();
+                switch (userSelect) {
+                    case 1:
+                        while(!affirmUpdate) {
+                            System.out.println("Enter Delivery Area ID: ");
+                            userSelect = sc.nextInt();
+                            da = DeliveryArea.readDeliveryAreaFromDB(userSelect);
+
+                            System.out.println("New Delivery Area name: ");
+                            da.setDeliveryAreaName(sc.nextLine());
+                            System.out.println("Confirm changes? [y/n]");
+                            if (sc.next().toLowerCase().charAt(0) == 'y') {
+                                affirmUpdate = true;
+                                if (DeliveryArea.updateDeliveryAreaInDB(da)) {
+                                    System.out.println("Delivery Area successfully updated.");
+                                } else {
+                                    System.out.println("Unable to update delivery area. Please try again.");
+                                }
+                            }
+                            if(sc.next().toLowerCase().charAt(0) == 'n') {
+                                System.out.println("Return to previous menu? [y/n]");
+                                if (sc.next().toLowerCase().charAt(0) == 'y') {
+                                    return;
+                                }
+                                else break;
+                            }
+                        }
+
+                    case 2:
+                        /*
+                        * @todo Enable ability to print List generated from DB query and select 1 to update
+                        *  ArrayList<DeliveryArea> deliveryAreas = DeliveryArea.methodToReturnDeliveryAreas();
+                        * for(DeliveryArea d : deliveryAreas){
+                        *   System.out.print(deliveryAreas.getIndexOf(d));
+                        *   System.out.println(d.toString());
+                        * }
+                        *
+                        * System.out.println("Type the number above the delivery area to select it.");
+                        * userSelect = sc.nextInt();
+                        * da = deliveryAreas.get
+                        *
+                         */
+                    default:
+                        break;
+                }
+            }
+            catch (InputMismatchException e){
+                System.out.println("Input error encountered. Please try again.");
+            }
+            catch(Exception e){
+                System.out.println("Unknown Exception");
+                return;
+            }
+        }
+        return;
+    }
+
+
 
 //  *** ORDER METHODS ***
 
@@ -375,7 +476,43 @@ public class CLI {
 
 //  *** PUBLICATION METHODS ***
 
+    static void publicationRouting() {
+        int userSelect = 0;
+        boolean validInput = false;
 
+        while(!validInput) { // Loops until the Scanner receives a valid input.
+            try {
+                validInput = true;
+
+                System.out.println("Select from the following options: \n");
+                System.out.println("1. Create a new publication    " +
+                        "2. Find a publication         " +
+                		"3. Edit a publication         " +
+                        "99. Exit to previous selection");
+
+                userSelect = sc.nextInt();
+                switch (userSelect) {
+                    case 1:
+                    	Publication publication = new Publication();
+                    	publicationCreation(publication);
+                        return;
+                    case 2:
+                        retrievePublication();
+                        break;
+                    case 3:
+                        updatePublication();
+                        break;
+                    case 99:
+                        return;
+                    default:
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter a number from the aforementioned options!");
+                sc.nextLine();
+            }
+        }
+    }
 
     /**
      * @param newPublication
@@ -427,6 +564,173 @@ public class CLI {
         }
     }
 
+    public static void updatePublication() {
+        ArrayList<Publication> publicationList;
+        String pubName;
+        String pubAuthor;
+        boolean validInput = false;
+        boolean confirmSeletion = false;
+        int userSelect = 0;
+        //Loops until valid input is entered.
+        while(!validInput) {
+            try{
+                //Enter name of publication
+                System.out.println("Enter name of publication: ");
+                sc.nextLine();
+                pubName = sc.nextLine();
+
+                if(pubName.isEmpty()){
+                    System.out.println("Publication name cannot be empty.");
+
+                } else if (pubName.equals("99")) {
+                    return;
+                }
+                //Search for publication in database.
+                publicationList = Publication.searchPublicationInDB(pubName);
+                //If publication is not in list displays message.
+                if(publicationList.isEmpty()){
+                    System.out.println("Publication not found.");
+                    return;
+                }
+                else{
+                    //Displays details of each publication found
+                    for(Publication p : publicationList){
+                        System.out.println(publicationList.indexOf(p) + 1);
+                        System.out.println(p.toString());
+                    }
+                }
+
+                System.out.println("Select using the numbers displayed, which publication you would like to update: ");
+                userSelect = sc.nextInt();
+
+                  if(userSelect < 1 || userSelect > publicationList.size()){
+                    System.out.println("Please enter a valid number from the following options!");
+                    return;
+                }
+
+                Publication publicationSelected = publicationList.get(userSelect - 1);
+
+                //
+                System.out.println("Change desired attributes of publication slected. If you do not want to change publication attribute " +
+                        "please press enter.");
+                while (!confirmSeletion){
+                    try{
+                        System.out.println("Enter name of publication: ");
+                        sc.nextLine();
+                        String pubNameInput = sc.nextLine();
+                        if(!pubNameInput.isEmpty()){
+                            publicationSelected.setPubName(pubNameInput);
+                        }
+                        else{
+                            System.out.println("Publication attribute staying the same.");
+                        }
+
+                        System.out.println("Enter publication author: ");
+                        //sc.nextLine();
+                        String pubAuthorInput = sc.nextLine();
+                        if(!pubAuthorInput.isEmpty()){
+                            publicationSelected.setPubAuthor(pubAuthorInput);
+                        }
+                        else{
+                            System.out.println("Publication attribute staying the same.");
+                        }
+
+                        System.out.println("Enter publication type: ");
+                        String pubTypeInput = sc.nextLine();
+                        if(!pubTypeInput.isEmpty()){
+                            publicationSelected.setPubType(pubTypeInput);
+                        }
+                        else{
+                            System.out.println("Publication attribute staying the same.");
+                        }
+
+                        System.out.println("Enter publication frequency: ");
+                        String pubFrequencyInput = sc.nextLine();
+                        if(!pubFrequencyInput.isEmpty()){
+                            publicationSelected.setPubFrequency(pubFrequencyInput);
+                        }
+
+                        System.out.println("Enter publication price: ");
+                        String pubCostInput = sc.next();
+                        if(!pubCostInput.isEmpty()){
+                            double pubCost = Double.parseDouble(pubCostInput);
+                            publicationSelected.setPubCost(pubCost);
+                        }
+                        else{
+                            System.out.println("Publication attribute staying the same.");
+                        }
+
+                        System.out.println("Confirm changes: [y/n] ");
+                        if(sc.next().equals("y")){
+                            confirmSeletion = true;
+
+                            if(Publication.updatePublicationInDB(publicationSelected)){
+                                System.out.println("Publication successfully updated.");
+                            }
+                            else{
+                                System.out.println("Unable to update publication.");
+                            }
+                        }
+
+
+                    }
+                    catch(Exception e){
+                        System.out.println("Error!! Publication could not be updated please try again!");
+                        return;
+                    }
+                }
+
+            }
+            catch (InputMismatchException e) {
+                System.out.println("Please try again");
+            }
+
+        }
+    }
+/**
+* Retrieve information for publications when title is entered.
+*/
+    public static void retrievePublication() {
+        ArrayList<Publication> publicationList;
+        String pubName;
+        String pubAuthor;
+        boolean validInput = false;
+        //Loops until valid input is entered.
+        while(!validInput) {
+            try{
+                //Enter name of publication
+                System.out.println("Enter name of publication: ");
+                sc.nextLine();
+                pubName = sc.nextLine();
+
+                if(pubName.isEmpty()){
+                    System.out.println("Publication name cannot be empty.");
+
+                } else if (pubName.equals("99")) {
+                    return;
+                }
+                //Search for publication in database.
+                publicationList = Publication.searchPublicationInDB(pubName);
+                //If publication is not in list displays message.
+                if(publicationList.isEmpty()){
+                    System.out.println("Publication not found.");
+                }
+                else{
+                    //Displays details of each publication found
+                    for(Publication p : publicationList){
+                        System.out.println(p.toString());
+                        validInput = true;
+                    }
+                }
+
+            }
+            catch (InputMismatchException e) {
+                System.out.println("Please try again");
+            }
+        }
+
+
+    }
 
 
 //  *** MAIN ***

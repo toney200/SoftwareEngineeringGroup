@@ -3,6 +3,9 @@
  * This class represents Publications, the details include: cost, name, type, author, frequency and id number.
  * It includes validation methods to ensure data integrity. 
  */
+
+import java.util.ArrayList;
+
 public class Publication {
 	
 	//Class Variables
@@ -13,17 +16,49 @@ public class Publication {
 	  private String pubFrequency;
 	  private int pubID;
 	  
-	public Publication() {
-		
-	}
+	  public static MySQLConnector mySQLConnector;
+
+	  public static void closeSQLConnector() {
+		  if (mySQLConnector != null) {
+			  mySQLConnector.closeDB();
+		  }
+		  mySQLConnector = null;
+	  }
+
+	    public Publication(){
 	
-	public Publication(int id, String name, String author, String type, String frequency, double cost) {
-		pubID = id;
-		pubName = name;
-		pubAuthor = author;
-		pubType = type;
-		pubFrequency = frequency;
-		pubCost = cost;
+		}
+
+	public Publication(int pubID, String pubName, String pubType, String pubAuthor, String pubFrequency, double pubCost) {
+
+		this.pubID = pubID;
+		this.pubName = pubName;
+		this.pubType = pubType;
+		this.pubAuthor = pubAuthor;
+		this.pubFrequency = pubFrequency;
+		this.pubCost = pubCost;
+
+	}
+	//Searches for publications within the database when a name is entered.
+	public static ArrayList<Publication> searchPublicationInDB(String pubName){
+		//Ensures SQL instance is initiated properly.
+		instantiateSQLInstance();
+		//Return search results
+		return mySQLConnector.searchPublicationByName(pubName);
+	}
+
+	public static boolean updatePublicationInDB(Publication p){
+		return mySQLConnector.updatePublication(p);
+	}
+	//Initializes instance of SQL connector if none is found
+	private static void instantiateSQLInstance() {
+		try {
+			if(mySQLConnector == null){
+				mySQLConnector = new MySQLConnector();
+			}
+		} catch (Exception e) {
+			System.err.println("Error occured linking application to database. Ref instantiateSQLInstance() method.");
+		}
 	}
 	
 	  //Getter and Setters
@@ -179,4 +214,13 @@ public class Publication {
 		return false;
 	}
 	
+	@Override
+	public String toString() {
+		return "Publication Name: " + this.pubName + " "
+				+ "\nPublication Type: " + this.pubType + " "
+				+ "\nPublication Author: " + this.pubAuthor + " "
+				+ "\nPublication Frequency: " + this.pubFrequency + " "
+				+ "\nPublication Cost: " + this.pubCost
+				+ "\n_______________________________________________________________________";
+	}
 }
