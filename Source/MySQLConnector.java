@@ -415,6 +415,42 @@ public class MySQLConnector {
         return publication;
 
     }
+    
+    /**
+     * Deletes an existing customer in the database
+     * @param c - the customer to be deleted
+     * @return true or false depending on if the customer was successfuly deleted
+     */
+    public boolean deleteCustomer(Customer c) {
+    	return false;
+    }
+    
+    /**
+     * Deletes an existing delivery area in the database
+     * @param da - the delivery area to be deleted
+     * @return true or false depending on if the delivery area was successfuly deleted
+     */
+    public boolean deleteDeliveryArea(DeliveryArea da) {
+    	return false;
+    }
+    
+    /**
+     * Deletes an existing publication in the database
+     * @param p - the publication to be deleted
+     * @return true or false depending on if the publication was successfuly deleted
+     */
+    public boolean deletePublication(Publication p) {
+    	return false;
+    }
+    
+    /**
+     * Deletes an existing order in the database
+     * @param o - the order to be deleted
+     * @return true or false depending on if the order was successfuly deleted
+     */
+    public boolean deleteOrder(Order o) {
+    	return false;
+    }
 
 	
 //	public boolean insertOrderDetails(Order p) {
