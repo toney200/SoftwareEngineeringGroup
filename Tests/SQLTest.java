@@ -162,7 +162,7 @@ class SQLTest {
 	void updatePublicationTrue() throws Exception {
 		MySQLConnector dbLink = new MySQLConnector();
 		Publication obj = new Publication(1, "TUS Daily", "Magazine", "Abraham Lincoln", "Daily", 2.77);
-		assertTrue(dbLink.updatePublicationDetails(obj));
+		assertTrue(dbLink.updatePublication(obj));
 	}
 	
 	/*
@@ -175,7 +175,7 @@ class SQLTest {
 	@Test
 	void updatePublicationFalse() throws Exception {
 		MySQLConnector dbLink = new MySQLConnector();
-		assertFalse(dbLink.updatePublicationDetails(null));
+		assertFalse(dbLink.updatePublication(null));
 	}
 	
 	/*
@@ -297,7 +297,7 @@ class SQLTest {
 	
 	/*
 	 * Test #22
-	 * Obj: Verify the customer was successfuly deleted
+	 * Obj: Verify the customer was successfully deleted
 	 * Inputs: Existing customer in the database
 	 * Expected outputs: true
 	 * 
@@ -325,7 +325,7 @@ class SQLTest {
 	
 	/*
 	 * Test #24
-	 * Obj: Verify the publication was successfuly deleted
+	 * Obj: Verify the publication was successfully deleted
 	 * Inputs: Existing publication in the database
 	 * Expected outputs: true
 	 * 
@@ -353,13 +353,13 @@ class SQLTest {
 	
 	/*
 	 * Test #26
-	 * Obj: Verify the delivery area was successfuly deleted
+	 * Obj: Verify the delivery area was successfully deleted
 	 * Inputs: Existing delivery area in the database
 	 * Expected outputs: true
 	 * 
 	 */
 	@Test
-	void deletePublicationTrue() throws Exception {
+	void deleteDeliveryAreaTrue() throws Exception {
 		MySQLConnector dbLink = new MySQLConnector();
 		DeliveryArea obj = new DeliveryArea(3, "Earth");
 		assertTrue(dbLink.deleteDeliveryArea(obj));
@@ -367,13 +367,13 @@ class SQLTest {
 	
 	/*
 	 * Test #27
-	 * Obj: Verify that deletion of the delibery area was unsuccessful
+	 * Obj: Verify that deletion of the delivery area was unsuccessful
 	 * Inputs: Non-existing delivery area in the database
 	 * Expected outputs: false
 	 * 
 	 */
 	@Test
-	void deletePublicationFalse() throws Exception {
+	void deleteDeliveryAreaFalse() throws Exception {
 		MySQLConnector dbLink = new MySQLConnector();
 		DeliveryArea obj = new DeliveryArea(99, "France");
 		assertFalse(dbLink.deleteDeliveryArea(obj));

@@ -425,8 +425,12 @@ public class MySQLConnector {
         try{
             preparedStatement = connect.prepareStatement("Delete From customers Where customerID = ?");
             preparedStatement.setInt(1, c.getID());
-            preparedStatement.executeUpdate();
-            return true;
+            int result = preparedStatement.executeUpdate();
+            if(result > 0) {
+            	return true;
+            } else {
+            	return false;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -442,8 +446,12 @@ public class MySQLConnector {
         try{
             preparedStatement = connect.prepareStatement("Delete From deliveryAreas Where deliveryAreaID = ?");
             preparedStatement.setInt(1, da.getDeliveryAreaID());
-            preparedStatement.executeUpdate();
-            return true;
+            int result = preparedStatement.executeUpdate();
+            if(result > 0) {
+            	return true;
+            } else {
+            	return false;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -459,8 +467,12 @@ public class MySQLConnector {
         try{
             preparedStatement = connect.prepareStatement("Delete From publications Where publicationID = ?");
             preparedStatement.setInt(1, p.getPubID());
-            preparedStatement.executeUpdate();
-            return true;
+            int result = preparedStatement.executeUpdate();
+            if(result > 0) {
+            	return true;
+            } else {
+            	return false;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
