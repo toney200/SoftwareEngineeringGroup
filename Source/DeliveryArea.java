@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class DeliveryArea {
 
     // Class Variables
@@ -77,7 +79,7 @@ public class DeliveryArea {
         if (sqlConnector == null) {
             instantiateSQLInstance();
         }
-        return MySQLConnector.searchDeliveryArea();
+        return sqlConnector.searchDeliveryAreas();
     }
 
     @Override
