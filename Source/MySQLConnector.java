@@ -422,7 +422,15 @@ public class MySQLConnector {
      * @return true or false depending on if the customer was successfuly deleted
      */
     public boolean deleteCustomer(Customer c) {
-    	return false;
+        try{
+            preparedStatement = connect.prepareStatement("Delete From customers Where customerID = ?");
+            preparedStatement.setInt(1, c.getID());
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
     /**
@@ -431,7 +439,15 @@ public class MySQLConnector {
      * @return true or false depending on if the delivery area was successfuly deleted
      */
     public boolean deleteDeliveryArea(DeliveryArea da) {
-    	return false;
+        try{
+            preparedStatement = connect.prepareStatement("Delete From deliveryAreas Where deliveryAreaID = ?");
+            preparedStatement.setInt(1, da.getDeliveryAreaID());
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
     /**
@@ -440,7 +456,15 @@ public class MySQLConnector {
      * @return true or false depending on if the publication was successfuly deleted
      */
     public boolean deletePublication(Publication p) {
-    	return false;
+        try{
+            preparedStatement = connect.prepareStatement("Delete From publications Where publicationID = ?");
+            preparedStatement.setInt(1, p.getPubID());
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
     /**
