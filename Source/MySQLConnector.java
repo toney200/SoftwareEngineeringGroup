@@ -31,6 +31,9 @@ public class MySQLConnector {
 		
 	}
 
+	/**
+	 * Closes the connection to the database
+	 */
 	public void closeDB() {
 		try {
 			connect.close();
@@ -39,6 +42,11 @@ public class MySQLConnector {
 		}
 	}
 
+	/**
+	 * Inserts a new customer in the database
+	 * @param c - valid customer to be inserted
+	 * @return true or false depending on whether the insertion was successful
+	 */
 	public boolean insertCustomerDetails(Customer c) {
 	
 		boolean insertSucessfull = true;
@@ -128,6 +136,11 @@ public class MySQLConnector {
         return deliveryAreas;
 	}
 	
+	/**
+	 * Searches for a specific delivery area by ID in the database
+	 * @param deliveryAreaID - delivery area ID to search
+	 * @return a DeliveryArea object with data retrieved from the database
+	 */
 	public DeliveryArea searchDeliveryAreaByID(int deliveryAreaID) {
 		DeliveryArea foundDeliveryArea = null;
 
@@ -167,6 +180,11 @@ public class MySQLConnector {
         return publications;
 	}
 	
+	/**
+	 * Searches for a specific publication by ID in the database
+	 * @param publicationID - publication ID to search
+	 * @return a Publication object with data retrieved from the database
+	 */
 	public Publication searchPublicationByID(int publicationID) {
 		Publication foundPublication = null;
 
@@ -216,8 +234,8 @@ public class MySQLConnector {
     }
 
 	/**
-	 * @param firstname the first name of the customer to be searched within the Customers table
-	 * @param lastName the last name of the customer to be searched within the Customers table
+	 * @param firstname - the first name of the customer to be searched within the Customers table
+	 * @param lastName - the last name of the customer to be searched within the Customers table
 	 * @return an ArrayList of Customer objects where the first and/or last name match those of the parameters
 	 */
 	public ArrayList<Customer> searchCustomerByName(String firstname, String lastName){
@@ -241,8 +259,8 @@ public class MySQLConnector {
     }
 
 	/**
-	 *
-	 * @param c the Customer object to be updated
+	 * Updates an existing customer in the database
+	 * @param c - the Customer object to be updated
 	 * @return the true/false depending on success of the update attempt in the database
 	 */
 	public boolean updateCustomerDetails(Customer c) {
@@ -264,24 +282,11 @@ public class MySQLConnector {
 		}
 	}
 	
-	public boolean updatePublicationDetails(Publication p) {
-		try{
-			preparedStatement = connect.prepareStatement("Update publications Set title = ?, author = ?, " +
-					"type = ?, frequency = ?, cost = ? Where publicationID = ?");
-			preparedStatement.setString(1, p.getPubName());
-			preparedStatement.setString(2, p.getPubAuthor());
-			preparedStatement.setString(3, p.getPubType());
-			preparedStatement.setString(4, p.getPubFrequency());
-			preparedStatement.setDouble(5, p.getPubCost());
-			preparedStatement.setInt(6, p.getPubID());
-			preparedStatement.executeUpdate();
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
+	/**
+	 * Updates an existing delivery area in the database
+	 * @param da - the DeliveryArea object with info to update the existing delivery area in the database
+	 * @return the true/false depending on success of the update attempt in the database
+	 */
 	public boolean updateDeliveryAreaDetails(DeliveryArea da) {
 		try{
 			preparedStatement = connect.prepareStatement("Update deliveryAreas Set name = ? Where DeliveryAreaID = ?");
@@ -308,6 +313,11 @@ public class MySQLConnector {
 		}
 	}
 	
+	/**
+	 * Inserts a new delivery area in the database
+	 * @param da - valid delivery area to be inserted
+	 * @return true or false depending on whether the insertion was successful
+	 */
 	public boolean insertDeliveryAreaDetails(DeliveryArea da) {
 		
 		boolean insertSucessfull = true;
@@ -326,6 +336,11 @@ public class MySQLConnector {
 		return insertSucessfull;
 	}
 	
+	/**
+	 * Inserts a new publication in the database
+	 * @param p - valid publication to be inserted
+	 * @return true or false depending on whether the insertion was successful
+	 */
 	public boolean insertPublicationDetails(Publication p) {
 		
 		boolean insertSucessfull = true;
@@ -349,6 +364,11 @@ public class MySQLConnector {
 		return insertSucessfull;
 	}
 
+	/**
+	 * Updates an existing publication in the database
+	 * @param p - the Publication object with info to update the existing publication in the database
+	 * @return the true/false depending on success of the update attempt in the database
+	 */
 	 public boolean updatePublication(Publication p) {
         try{
             preparedStatement = connect.prepareStatement("update publications set title = ?, author = ?, " +
