@@ -52,6 +52,10 @@ public class Customer {
     }
 
 
+    /**
+     * Closes the SQL Connection by calling MySQLConnector.closeDB() on the static sqlConnector
+     * in Customer if it is not null.
+     */
     public static void closeSQLConnection(){
         if(sqlConnector != null){
             sqlConnector.closeDB();
@@ -68,7 +72,22 @@ public class Customer {
         return sqlConnector.insertCustomerDetails(customer);
     }
 
+
     /**
+     * Deletes the associated Customer entry within the database via MySQLConnector.
+     * @param customer the customer object to be deleted from the database
+     */
+    public static void deleteCustomerFromDB(Customer customer){
+        if (sqlConnector.deleteCustomer(customer)){
+            System.out.println("Customer successfully deleted.");
+        } else if (!sqlConnector.deleteCustomer(customer)) {
+            System.err.println("Customer could not be deleted.");
+        }
+    }
+
+
+    /**
+     * Provides the name to be used for a query in the database to find a customer
      * @param firstname customer first name as entered by the user
      * @param lastname customer last name as entered by the user
      * @return the list of Customer objects that contain either parameter as attributes
@@ -79,6 +98,17 @@ public class Customer {
         }
         return sqlConnector.searchCustomerByName(firstname, lastname);
     }
+
+
+    /**
+     * Returns an instance of Customer with the associated ID within the database.
+     * @param id Customer identifier/primary key within the database
+     * @return a Customer object with the matching information
+     */
+    public static Customer searchCustomerByID(int id){
+        return sqlConnector.searchCustomerByID(id);
+    }
+
 
     /**
      * Takes a Customer object and updates the relevant table entry in the database
@@ -288,7 +318,7 @@ public class Customer {
     }
 
     /**
-     * @return Formatted Customer object listing private member variables.
+     * @return formatted String listing private member variables.
      */
     @Override
     public String toString() {

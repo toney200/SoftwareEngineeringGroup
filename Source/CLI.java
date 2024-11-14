@@ -3,13 +3,49 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- * Contains all the necessary functionality to provide a command line interface to the user. Handles switching of user
- * interaction menus that link to functionality within external classes.
+ * This class serves as the command-line interface (CLI) for managing customers, orders, deliveries,
+ * and other related tasks. It provides text-based prompts to the user, receives input, and then
+ * delegates the actual processing to other classes responsible for the business logic.
+ * <p>
+ * The CLI handles the interaction with the user by presenting options, collecting input, and
+ * calling methods in other service or business logic classes to perform the necessary operations.
+ * The logic behind customer management, order processing, and delivery handling is not contained
+ * within this class; it acts purely as an interface for user interaction.
+ * </p>
+ * <p>
+ * This class does not perform any core business logic but instead coordinates user input and the
+ * invocation of appropriate backend methods. It serves as a facilitator for the end-user to interact
+ * with the system in a simple, text-based manner.
+ * </p>
  */
 public class CLI {
     static Scanner sc = new Scanner(System.in);
     static boolean wantsToClose = false;        // triggers the application to close when set to true via user input
-    
+
+    /**
+     * This class represents the command-line interface (CLI) for managing the application's user interactions
+     * with customers, orders, deliveries, and other tasks. The constructor initializes the system by presenting
+     * the main menu to the user, where they can select different options to trigger the corresponding actions.
+     * <p>
+     * The constructor is the entry point of the application, responsible for starting the interaction flow.
+     * Each menu option presented to the user is mapped to a specific method that handles the requested action,
+     * and control can return to the constructor after each action to present the menu again, allowing for continuous
+     * user interaction.
+     * </p>
+     * <p>
+     * The application can be closed at any point from within the constructor, either through user input. If any
+     * unforeseen issues arise during the execution (e.g., a bug or unexpected state), the constructor will throw a
+     * non-specific {@link Exception} to indicate an error and allow the program to fail gracefully.
+     * </p>
+     * <p>
+     * The class does not perform any business logic itself but acts as a facilitator between the user and the underlying
+     * system logic. It is primarily responsible for routing user input to the appropriate methods and maintaining the
+     * overall flow of the application.
+     * </p>
+     *
+     * @throws Exception if an unforeseen error occurs during the operation of the CLI, such as an unexpected bug
+     *                   or system failure.
+     */
     CLI() throws Exception{
         while (!wantsToClose) {
             int userSelect = 0; // directs the constructor to call the relevant routing method based on what the user changes this value to
@@ -78,6 +114,7 @@ public class CLI {
                 System.out.println("1. Create a new customer    " +
                         "2. Edit a customer profile     " +
                         "3. View a customer profile     " +
+                        "4. Delete a customer profile     " +
                         "99. Exit to previous selection");
 
                 userSelect = sc.nextInt();
@@ -91,6 +128,9 @@ public class CLI {
                         break;
                     case 3:
                         readCustomer();
+                        break;
+                    case 4:
+                        deleteCustomer();
                         break;
                     case 99:
                         return;
@@ -148,6 +188,72 @@ public class CLI {
         	System.out.println("Unable to connect to database. Please restart your application and try again.");
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * Prompts the user to search for a Customer then returns a list of potential matches for their query. The user
+     * selects the desired match via prompt and this Customer is passed to the system to delete the matching customer
+     * entry in the database.
+     */
+    static void deleteCustomer(){
+        boolean validInput = false;
+        int userSelect = 0;
+
+        System.out.println("Deleting Customer records is permanent. Follow the proceeding prompts to delete." +
+                "Search customer to delete by name[y] or ID[n]? [y/n].  Press any other character to return.");
+
+        // Prompts search via first and last name. Returns list of matches and prompts the user to delete one.
+        if (sc.nextLine().equals("y")){
+            String firstName;
+            String lastName;
+
+            System.out.println("Enter first name: ");
+            firstName = sc.next();
+            System.out.println("Enter last name: ");
+            lastName = sc.next();
+
+            ArrayList<Customer> customers = Customer.searchCustomerByName(firstName, lastName);
+            for(Customer c : customers){
+                System.out.println(customers.indexOf(c) + 1);
+                System.out.println(c.toString() + "\n");
+            }
+
+            while(!validInput){
+                System.out.println("Delete the desired customer by typing the number above their listing.");
+                try{
+                    userSelect = sc.nextInt();
+                    Customer.deleteCustomerFromDB(customers.get(userSelect-1));
+                    validInput = true;
+                }
+                catch (InputMismatchException e) {
+                    System.out.println("Please enter a number from the aforementioned options!");
+                }
+            }
+        }
+
+        // Prompts the user for an int ID to reference the Customer record to be deleted from the database
+        else if(sc.nextLine().equals("n")) {
+            int id;
+
+            while(!validInput){
+                System.out.println("Enter the ID of the customer you wish to delete");
+                try{
+                    id = sc.nextInt();
+                    validInput = true;
+                    Customer.deleteCustomerFromDB(Customer.searchCustomerByID(id));
+                }
+                catch (InputMismatchException e) {
+                    System.out.println("Please enter a number from the aforementioned options!");
+                }
+            }
+        }
+
+        else {
+            return;
+        }
+
+        return;
     }
 
 
@@ -473,6 +579,26 @@ public class CLI {
     }
 
 
+    private static void  createOrder(){
+        // @todo Provide the necessary prompts to populate an Order
+    }
+
+
+    private static void deleteOrder(){
+        // @todo Provide the necessary prompts to find and delete an Order
+    }
+
+
+    private static void holdOrder(){
+        // @todo Provide the necessary prompts to find and place an Order on hold
+    }
+
+
+    private static void readOrder(){
+        //@todo Provide the necessary prompts to find and display an Order
+    }
+
+
 
 //  *** PUBLICATION METHODS ***
 
@@ -563,6 +689,8 @@ public class CLI {
             e.printStackTrace();
         }
     }
+
+
 
     public static void updatePublication() {
         ArrayList<Publication> publicationList;
@@ -687,6 +815,8 @@ public class CLI {
 
         }
     }
+
+
 /**
 * Retrieve information for publications when title is entered.
 */
@@ -733,6 +863,7 @@ public class CLI {
     }
 
 
+
 //  *** MAIN ***
 
     /**
@@ -745,7 +876,8 @@ public class CLI {
         }
         catch(Exception e){
             // we should never be here
-            System.err.println("Oops! We ran into an unknown issue! Please restart the application.");
+            System.err.println("Oops! We ran into an unknown issue! Please restart the application. \n" +
+                    "If the problem persists, please contact the developer.");
             e.printStackTrace();
         }
     }

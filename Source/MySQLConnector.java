@@ -71,7 +71,6 @@ public class MySQLConnector {
 	}
 
 	/**
-	 * @todo Enable search by ID and establish full functionality in Customer and CLI classes
 	 * @param customerID
 	 * @return
 	 */
