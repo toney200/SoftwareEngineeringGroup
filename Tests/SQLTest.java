@@ -162,7 +162,7 @@ class SQLTest {
 	void updatePublicationTrue() throws Exception {
 		MySQLConnector dbLink = new MySQLConnector();
 		Publication obj = new Publication(1, "TUS Daily", "Magazine", "Abraham Lincoln", "Daily", 2.77);
-		assertTrue(dbLink.updatePublicationDetails(obj));
+		assertTrue(dbLink.updatePublication(obj));
 	}
 	
 	/*
@@ -175,7 +175,7 @@ class SQLTest {
 	@Test
 	void updatePublicationFalse() throws Exception {
 		MySQLConnector dbLink = new MySQLConnector();
-		assertFalse(dbLink.updatePublicationDetails(null));
+		assertFalse(dbLink.updatePublication(null));
 	}
 	
 	/*
@@ -293,5 +293,89 @@ class SQLTest {
 	void searchDeliveryAreasTest() throws Exception {
 		MySQLConnector dbLink = new MySQLConnector();
 		assertTrue(dbLink.searchDeliveryAreas().size() > 0);
+	}
+	
+	/*
+	 * Test #22
+	 * Obj: Verify the customer was successfully deleted
+	 * Inputs: Existing customer in the database
+	 * Expected outputs: true
+	 * 
+	 */
+	@Test
+	void deleteCustomerTrue() throws Exception {
+		MySQLConnector dbLink = new MySQLConnector();
+		Customer obj = new Customer(1, "Dimitrije", "Sreckovic", "0896875219", "57 Moon, Milky Way", "N37Y5F4", 2);
+		assertTrue(dbLink.deleteCustomer(obj));
+	}
+	
+	/*
+	 * Test #23
+	 * Obj: Verify that deletion of the customer was unsuccessful
+	 * Inputs: Non-existing customer in the database
+	 * Expected outputs: false
+	 * 
+	 */
+	@Test
+	void deleteCustomerFalse() throws Exception {
+		MySQLConnector dbLink = new MySQLConnector();
+		Customer obj = new Customer(58, "Keanu", "Reeves", "0899517532", "569 Mars, Milky Way", "N37T725", 2);
+		assertFalse(dbLink.deleteCustomer(obj));
+	}
+	
+	/*
+	 * Test #24
+	 * Obj: Verify the publication was successfully deleted
+	 * Inputs: Existing publication in the database
+	 * Expected outputs: true
+	 * 
+	 */
+	@Test
+	void deletePublicationTrue() throws Exception {
+		MySQLConnector dbLink = new MySQLConnector();
+		Publication obj = new Publication(1, "TUS Daily", "Magazine", "Abraham Lincoln", "Daily", 2.77);
+		assertTrue(dbLink.deletePublication(obj));
+	}
+	
+	/*
+	 * Test #25
+	 * Obj: Verify that deletion of the publication was unsuccessful
+	 * Inputs: Non-existing publication in the database
+	 * Expected outputs: false
+	 * 
+	 */
+	@Test
+	void deletePublicationFalse() throws Exception {
+		MySQLConnector dbLink = new MySQLConnector();
+		Publication obj = new Publication(99, "TUS Monthly", "Magazine", "Ericsson", "Monthly", 2.99);
+		assertFalse(dbLink.deletePublication(obj));
+	}
+	
+	/*
+	 * Test #26
+	 * Obj: Verify the delivery area was successfully deleted
+	 * Inputs: Existing delivery area in the database
+	 * Expected outputs: true
+	 * 
+	 */
+	@Test
+	void deleteDeliveryAreaTrue() throws Exception {
+		MySQLConnector dbLink = new MySQLConnector();
+		DeliveryArea obj = new DeliveryArea(3, "Earth");
+		assertTrue(dbLink.deleteDeliveryArea(obj));
+	}
+	
+	/*
+	 * Test #27
+	 * Obj: Verify that deletion of the delivery area was unsuccessful
+	 * Inputs: Non-existing delivery area in the database
+	 * Expected outputs: false
+	 * 
+	 */
+	@Test
+	void deleteDeliveryAreaFalse() throws Exception {
+		MySQLConnector dbLink = new MySQLConnector();
+		DeliveryArea obj = new DeliveryArea(99, "France");
+		assertFalse(dbLink.deleteDeliveryArea(obj));
 	}
 }
