@@ -567,6 +567,7 @@ public class CLI {
                 System.out.println("1. Create a new publication    " +
                         "2. Find a publication         " +
                 		"3. Edit a publication         " +
+                        "4. Delete a publication         " +
                         "99. Exit to previous selection");
 
                 userSelect = sc.nextInt();
@@ -581,6 +582,8 @@ public class CLI {
                     case 3:
                         updatePublication();
                         break;
+                    case 4:
+                        deletePublication();
                     case 99:
                         return;
                     default:
@@ -650,7 +653,7 @@ public class CLI {
         try{
             System.out.println("Enter publication ID to delete. Press any alphabetic key to return");
             publicationID = sc.nextInt();
-            //Publication.deletePublication(publicationID);  @todo remove comment when method becomes available
+            Publication.deletePublicationByID(publicationID);
         }
         catch (InputMismatchException ime){
             return;
