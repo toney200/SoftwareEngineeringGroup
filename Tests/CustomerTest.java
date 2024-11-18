@@ -69,7 +69,6 @@ public class CustomerTest extends Customer{
         assertTrue(testCust.validateLastName("Murphy"));
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     /*
      * Customer Test 8
@@ -123,6 +122,6 @@ public class CustomerTest extends Customer{
      */
     @Test
     public void testValidatePhoneNo002(){
-
+        assertFalse(testCust.validatePhoneNo("083A567890"));
     }
 }

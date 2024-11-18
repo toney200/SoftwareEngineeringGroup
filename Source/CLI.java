@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -34,6 +35,9 @@ public class CLI {
                             validInput = true;
                             customerRouting();
                             break;
+                        case 2:
+                            validInput = true;
+                            orderRouting();
                         case 3:
                             validInput = true;
                             publicationRouting();
@@ -78,6 +82,7 @@ public class CLI {
                 System.out.println("1. Create a new customer    " +
                         "2. Edit a customer profile     " +
                         "3. View a customer profile     " +
+                        "4. Delete a customer profile     " +
                         "99. Exit to previous selection");
 
                 userSelect = sc.nextInt();
@@ -92,14 +97,19 @@ public class CLI {
                     case 3:
                         readCustomer();
                         break;
+                    case 4:
+                        deleteCustomer();
+                        break;
                     case 99:
                         return;
                     default:
+                        validInput = false;
                         break;
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Please enter a number from the aforementioned options!");
                 sc.nextLine();
+                validInput = false;
             }
         }
     }
@@ -147,6 +157,26 @@ public class CLI {
         catch(Exception e) {
         	System.out.println("Unable to connect to database. Please restart your application and try again.");
             e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Prompts the user for a numeric value representing the Customer ID that is then passed to the system to be
+     * deleted in the SQL database.
+     */
+    private static void deleteCustomer(){
+        int customerID;
+
+        System.out.println("Note: Deleting customers is permanent.");
+        System.out.println("Enter customer ID to delete. Press any alphabetic key to return to last screen: ");
+
+        try {
+            customerID = sc.nextInt();
+            Customer.deleteCustomerByID(customerID);
+        }
+        catch (InputMismatchException ime) {
+            return;
         }
     }
 
@@ -273,8 +303,6 @@ public class CLI {
 
 
 
-
-
 //  *** DELIVERY AREA METHODS ***
 
 
@@ -324,7 +352,7 @@ public class CLI {
 
 
     /**
-     * Creates an instance of the DeliveryArea class and populates its private member variables with user-defined values
+     * Creates an instance of the {@link DeliveryArea} class and populates its private member variables with user-defined values
      */
     static void createDeliveryArea(){
         DeliveryArea da = new DeliveryArea();
@@ -353,6 +381,18 @@ public class CLI {
     }
 
 
+    private static void deleteDeliveryArea(){
+        System.out.println("Enter the ID of the delivery area you want to delete: ");
+        try{
+            // @todo Remove comment when method becomes available.
+            // DeliveryArea.deleteDeliveryAreaInDB(sc.nextInt());
+        } catch (Exception e) {
+            System.out.println("Unable to delete delivery area. Please try again later.");
+        }
+        return;
+    }
+
+
     /**
      * Prints the associated delivery area according to user entered values.
      */
@@ -376,7 +416,7 @@ public class CLI {
 
     /**
      *  Prompts the user to direct a search query for a specific DeliveryArea entity within the database. Uses the
-     *  attributes to populate a DeliveryArea object that may be edited and returned to the database.
+     *  attributes to populate a {@link DeliveryArea} object that may be edited and returned to the database.
      */
     private static void updateDeliveryArea() {
         DeliveryArea da = new DeliveryArea();
@@ -467,9 +507,48 @@ public class CLI {
 
             userSelect = sc.nextInt();
             switch (userSelect) {
-
+                case 1:
+                    createOrder();
+                    validInput = true;
+                    break;
+                case 2:
+                    break;
+                case 99:
+                    return;
             }
         }
+        return;
+    }
+
+
+    /**
+     * Prompts the user for a data to populate an instance of {@link Order} before creating an additional database
+     * entry with that data.
+     */
+    private static void createOrder(){
+        boolean validInput = false;
+        Order order = new Order();
+
+        while(!validInput) {
+            System.out.println("Please enter the order details below ");
+            try{
+                order.setOrderDate(String.valueOf(LocalDate.now()));
+
+                System.out.println("Enter Publication ID: ");
+                order.setPublicationID(sc.nextInt());
+
+                System.out.println("Enter the associated customer ID: ");
+                order.setCustomerID(sc.nextInt());
+
+                //@todo Finalise order creation in DB
+                //Order.createOrderInDB(order);
+            }
+            catch(Exception e){
+                System.out.println("There was an issue creating this order. Please try again.");
+            }
+        }
+
+        return;
     }
 
 
@@ -561,6 +640,20 @@ public class CLI {
     	}
     	catch(Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+    private static void deletePublication(){
+        int publicationID;
+        System.out.println("Note: deleting stock items is permanent.");
+        try{
+            System.out.println("Enter publication ID to delete. Press any alphabetic key to return");
+            publicationID = sc.nextInt();
+            //Publication.deletePublication(publicationID);  @todo remove comment when method becomes available
+        }
+        catch (InputMismatchException ime){
+            return;
         }
     }
 

@@ -8,6 +8,32 @@ public class Order {
     private int customerID;             // each order must have a corresponding customer
     private int publicationID;          // each order is only tied to one publication
     private Date startAgainDate;        // orders can be placed on hold. This date represents the end of that hold
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    private MySQLConnector sqlConnector;
+
+    public Order(){
+        instantiateSQLInstance();
+    }
+
+    public Order(int orderID, Date orderDate, int customerID, int publicationID){
+        this.orderID = orderID;
+        this.orderDate = orderDate;
+        this.customerID = customerID;
+        this.publicationID = publicationID;
+        instantiateSQLInstance();
+    }
+
+    private void instantiateSQLInstance(){
+        if (sqlConnector == null){
+            try{
+                sqlConnector = new MySQLConnector();
+            }
+            catch(Exception e){
+                System.err.println("Unable to access database.");
+            }
+        }
+    }
+
     public int getOrderID() {
 		return orderID;
 	}
@@ -27,8 +53,6 @@ public class Order {
 	public Date getStartAgainDate() {
 		return startAgainDate;
 	}
-
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
     /**
      * @param customerID the ID of the customer to which this order is tied

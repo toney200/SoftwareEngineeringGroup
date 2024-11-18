@@ -47,7 +47,7 @@ public class Customer {
             sqlConnector = new MySQLConnector();
         }
         catch(Exception e){
-            System.err.println("Error occurred linking application to database. Ref Customer.instantiateSQLInstance() method.");
+            System.err.println("Unable to access database.");
         }
     }
 
@@ -67,6 +67,18 @@ public class Customer {
     public static boolean createCustomerInDB(Customer customer){
         return sqlConnector.insertCustomerDetails(customer);
     }
+
+
+    public static void deleteCustomerByID(int ID){
+        instantiateSQLInstance();
+        if(sqlConnector.deleteCustomer(sqlConnector.searchCustomerByID(ID))){
+            System.out.println("Customer with ID " + ID + " was deleted.");
+        }
+        else {
+            System.err.println("Customer with ID " + ID + " was not deleted.");
+        }
+    }
+
 
     /**
      * @param firstname customer first name as entered by the user
