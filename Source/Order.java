@@ -1,21 +1,20 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Order {
     private int orderID;                // this is a unique identifier attached to each individual order
-    private Date orderDate;             // date the order was created
+    private java.sql.Date orderDate;             // date the order was created
     private int customerID;             // each order must have a corresponding customer
     private int publicationID;          // each order is only tied to one publication
-    private Date startAgainDate;        // orders can be placed on hold. This date represents the end of that hold
+    private java.sql.Date startAgainDate;        // orders can be placed on hold. This date represents the end of that hold
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-    private MySQLConnector sqlConnector;
+    private static MySQLConnector sqlConnector;
 
     public Order(){
         instantiateSQLInstance();
     }
 
-    public Order(int orderID, Date orderDate, int customerID, int publicationID){
+    public Order(int orderID, java.sql.Date orderDate, int customerID, int publicationID){
         this.orderID = orderID;
         this.orderDate = orderDate;
         this.customerID = customerID;
@@ -34,11 +33,35 @@ public class Order {
         }
     }
 
+    /**
+     * Releases this Connection object's database and JDBC resources immediately instead of waiting for
+     * them to be automatically released.
+     */
+    public static void closeSQLConnection(){
+        if (sqlConnector!= null){
+            sqlConnector.closeDB();
+        }
+    }
+
+
+    /**
+     * Creates a new record in the MySQL database using data from members of the Order instance passed in as a parameter.
+     * @param order an instance of the {@link Order} class passed into the database to be stored as a new record
+     */
+    public static void createOrderInDB(Order order){
+        if(sqlConnector.insertOrderDetails(order)){
+            System.out.println("Order created successfully.");
+        }
+        else if(!sqlConnector.insertOrderDetails(order)){
+            System.out.println("Order could not be created.");
+        }
+    }
+
     public int getOrderID() {
 		return orderID;
 	}
 
-	public Date getOrderDate() {
+	public java.sql.Date getOrderDate() {
 		return orderDate;
 	}
 
@@ -50,7 +73,7 @@ public class Order {
 		return publicationID;
 	}
 
-	public Date getStartAgainDate() {
+	public java.sql.Date getStartAgainDate() {
 		return startAgainDate;
 	}
 
@@ -75,12 +98,12 @@ public class Order {
      */
     public void setOrderDate(String orderDate) throws Exception{
         if(validateOrderDate(orderDate)){
-            this.orderDate = dateFormat.parse(orderDate);
+            this.orderDate = (java.sql.Date) dateFormat.parse(orderDate);
         }
         else throw new IllegalArgumentException("Invalid order date");
     }
 
-    public void setStartAgainDate(Date startAgainDate) {
+    public void setStartAgainDate(java.sql.Date startAgainDate) {
         this.startAgainDate = startAgainDate;
     }
 
@@ -92,7 +115,7 @@ public class Order {
         try {
             dateFormat.parse(date);
             return true;
-        } catch (ParseException e) {
+        } catch (ParseException pe) {
             return false;
         }
     }

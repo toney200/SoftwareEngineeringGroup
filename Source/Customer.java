@@ -51,7 +51,10 @@ public class Customer {
         }
     }
 
-
+    /**
+     * Releases this Connection object's database and JDBC resources immediately instead of waiting for
+     * them to be automatically released.
+     */
     public static void closeSQLConnection(){
         if(sqlConnector != null){
             sqlConnector.closeDB();
@@ -70,7 +73,10 @@ public class Customer {
 
 
     public static void deleteCustomerByID(int ID){
-        instantiateSQLInstance();
+        if (sqlConnector == null) {
+            instantiateSQLInstance();
+        }
+
         if(sqlConnector.deleteCustomer(sqlConnector.searchCustomerByID(ID))){
             System.out.println("Customer with ID " + ID + " was deleted.");
         }

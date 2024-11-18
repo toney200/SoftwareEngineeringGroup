@@ -65,10 +65,10 @@ public class Publication {
 	public static void deletePublicationByID(int ID){
 		instantiateSQLInstance();
 		if(mySQLConnector.deletePublication(mySQLConnector.searchPublicationByID(ID))){
-			System.out.println("Customer with ID " + ID + " was deleted.");
+			System.out.println("Publication with ID " + ID + " was deleted.");
 		}
 		else {
-			System.err.println("Customer with ID " + ID + " was not deleted.");
+			System.err.println("Publication with ID " + ID + " was not deleted.");
 		}
 	}
 	//Initializes instance of SQL connector if none is found

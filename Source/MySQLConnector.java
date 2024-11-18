@@ -71,9 +71,8 @@ public class MySQLConnector {
 	}
 
 	/**
-	 * @todo Enable search by ID and establish full functionality in Customer and CLI classes
-	 * @param customerID
-	 * @return
+	 * @param customerID the unique identifier for Customer entries in the database
+	 * @return a {@link Customer} object populated with data from the SQL database
 	 */
 	public Customer searchCustomerByID(int customerID) {
 		Customer foundCustomer = null;
@@ -95,7 +94,6 @@ public class MySQLConnector {
 	}
 	
 	/**
-	 * @todo Enable search for all customers and establish full functionality in Customer and CLI classes
 	 * @return List of customers
 	 */
 	public ArrayList<Customer> searchCustomers() {
@@ -117,7 +115,6 @@ public class MySQLConnector {
 	}
 	
 	/**
-	 * @todo Enable search for all delivery areas and establish full functionality in DeliveryArea and CLI classes
 	 * @return List of delivery areas
 	 */
 	public ArrayList<DeliveryArea> searchDeliveryAreas() {
@@ -489,27 +486,27 @@ public class MySQLConnector {
     }
 
 	
-//	public boolean insertOrderDetails(Order p) {
-//		
-//		boolean insertSucessfull = true;
-//	
-//		try {
-//		
-//			//Create prepared statement to issue SQL query to the database
-//			preparedStatement = connect.prepareStatement("insert into orders values (default, ?, ?, ?, ?, ?)");
-//			preparedStatement.setInt(1, p.getID());
-//			preparedStatement.setDate(2, p.getDate());
-//			preparedStatement.setDate(3, p.getStartAgainDate());
-//			preparedStatement.setInt(4, p.getCustomerId());
-//			preparedStatement.setInt(5, p.getPublicationId());
-//			preparedStatement.executeUpdate();
-//		}
-//		catch (Exception e) {
-//			insertSucessfull = false;
-//		}
-//	
-//		return insertSucessfull;
-//	}
+	public boolean insertOrderDetails(Order p) {
+
+		boolean insertSucessfull = true;
+
+		try {
+
+			//Create prepared statement to issue SQL query to the database
+			preparedStatement = connect.prepareStatement("insert into orders values (default, ?, ?, ?, ?, ?)");
+			preparedStatement.setInt(1, p.getOrderID());
+			preparedStatement.setDate(2, p.getOrderDate());
+			preparedStatement.setDate(3, p.getStartAgainDate());
+			preparedStatement.setInt(4, p.getCustomerID());
+			preparedStatement.setInt(5, p.getPublicationID());
+			preparedStatement.executeUpdate();
+		}
+		catch (Exception e) {
+			insertSucessfull = false;
+		}
+
+		return insertSucessfull;
+	}
 
 	// public static void main(String[] args) {
 	// 	try {
