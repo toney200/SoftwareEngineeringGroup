@@ -380,18 +380,23 @@ public class CLI {
         return;
     }
 
+// delete method
+private static void deleteDeliveryArea() {
+    System.out.println("Enter the ID of the delivery area you want to delete: ");
+    try {
+        int deliveryAreaID = sc.nextInt();
+        boolean success = DeliveryArea.deleteDeliveryAreaByID(deliveryAreaID); 
 
-    private static void deleteDeliveryArea(){
-        System.out.println("Enter the ID of the delivery area you want to delete: ");
-        try{
-            // @todo Remove comment when method becomes available.
-            // DeliveryArea.deleteDeliveryAreaInDB(sc.nextInt());
-        } catch (Exception e) {
-            System.out.println("Unable to delete delivery area. Please try again later.");
+        if (success) {
+            System.out.println("Delivery area successfully deleted.");
+        } else {
+            System.out.println("Unable to delete delivery area. Please check the ID and try again.");
         }
-        return;
+    } catch (InputMismatchException e) {
+        System.out.println("Invalid input. Please enter a valid numeric delivery area ID.");
+        sc.nextLine(); 
     }
-
+}
 
     /**
      * Prints the associated delivery area according to user entered values.
