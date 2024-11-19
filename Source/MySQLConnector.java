@@ -416,7 +416,7 @@ public class MySQLConnector {
     /**
      * Deletes an existing customer in the database
      * @param c - the customer to be deleted
-     * @return true or false depending on if the customer was successfuly deleted
+     * @return true or false depending on if the customer was successfully deleted
      */
     public boolean deleteCustomer(Customer c) {
         try{
@@ -437,7 +437,7 @@ public class MySQLConnector {
     /**
      * Deletes an existing delivery area in the database
      * @param da - the delivery area to be deleted
-     * @return true or false depending on if the delivery area was successfuly deleted
+     * @return true or false depending on if the delivery area was successfully deleted
      */
     public boolean deleteDeliveryArea(DeliveryArea da) {
         try{
@@ -458,7 +458,7 @@ public class MySQLConnector {
     /**
      * Deletes an existing publication in the database
      * @param p - the publication to be deleted
-     * @return true or false depending on if the publication was successfuly deleted
+     * @return true or false depending on if the publication was successfully deleted
      */
     public boolean deletePublication(Publication p) {
         try{
@@ -479,7 +479,7 @@ public class MySQLConnector {
     /**
      * Deletes an existing order in the database
      * @param o - the order to be deleted
-     * @return true or false depending on if the order was successfuly deleted
+     * @return true or false depending on if the order was successfully deleted
      */
     public boolean deleteOrder(Order o) {
     	return false;
