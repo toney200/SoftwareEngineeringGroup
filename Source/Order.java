@@ -1,3 +1,4 @@
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -6,8 +7,8 @@ public class Order {
     private java.sql.Date orderDate;             // date the order was created
     private int customerID;             // each order must have a corresponding customer
     private int publicationID;          // each order is only tied to one publication
-    private java.sql.Date startAgainDate;        // orders can be placed on hold. This date represents the end of that hold
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    private java.sql.Date startAgainDate = null;        // orders can be placed on hold. This date represents the end of that hold
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD");
     private static MySQLConnector sqlConnector;
 
     public Order(){
@@ -96,9 +97,9 @@ public class Order {
      * @param orderDate date for the order to be delivered
      * @throws Exception if the order is not in the yyyy/MM/dd format
      */
-    public void setOrderDate(String orderDate) throws Exception{
+    public void setOrderDate(Date orderDate) throws Exception{
         if(validateOrderDate(orderDate)){
-            this.orderDate = (java.sql.Date) dateFormat.parse(orderDate);
+            this.orderDate = orderDate;
         }
         else throw new IllegalArgumentException("Invalid order date");
     }
@@ -111,11 +112,15 @@ public class Order {
      * @return a Date object from a given String if it is in the correct format. Throws a ParseException when this is not
      * the case
      */
-    private boolean validateOrderDate(String date) throws ParseException {
+    private boolean validateOrderDate(Date date) throws Exception {
         try {
-            dateFormat.parse(date);
-            return true;
-        } catch (ParseException pe) {
+            if(date instanceof Date) {
+            	return true;
+            }
+            else {
+            	return false;
+            }
+        } catch (Exception pe) {
             return false;
         }
     }

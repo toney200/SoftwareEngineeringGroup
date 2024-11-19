@@ -564,7 +564,9 @@ public class CLI {
         while(!validInput) {
             System.out.println("Please enter the order details below ");
             try{
-                order.setOrderDate(String.valueOf(LocalDate.now()));
+            	long millis=System.currentTimeMillis();
+            	System.out.println(new java.sql.Date(millis));
+                order.setOrderDate(new java.sql.Date(millis));
 
                 System.out.println("Enter Publication ID: ");
                 order.setPublicationID(sc.nextInt());
@@ -575,6 +577,7 @@ public class CLI {
                 Order.createOrderInDB(order);
             }
             catch(Exception e){
+            	e.printStackTrace();
                 System.out.println("There was an issue creating this order. Please try again.");
             }
         }

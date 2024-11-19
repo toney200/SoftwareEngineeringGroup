@@ -1,5 +1,5 @@
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
 
 
 public class MySQLConnector {
@@ -493,15 +493,15 @@ public class MySQLConnector {
 		try {
 
 			//Create prepared statement to issue SQL query to the database
-			preparedStatement = connect.prepareStatement("insert into orders values (default, ?, ?, ?, ?, ?)");
-			preparedStatement.setInt(1, p.getOrderID());
-			preparedStatement.setDate(2, p.getOrderDate());
-			preparedStatement.setDate(3, p.getStartAgainDate());
-			preparedStatement.setInt(4, p.getCustomerID());
-			preparedStatement.setInt(5, p.getPublicationID());
+			preparedStatement = connect.prepareStatement("insert into orders values (default, ?, ?, ?, ?)");
+			preparedStatement.setDate(1, p.getOrderDate());
+			preparedStatement.setDate(2, p.getStartAgainDate());
+			preparedStatement.setInt(3, p.getCustomerID());
+			preparedStatement.setInt(4, p.getPublicationID());
 			preparedStatement.executeUpdate();
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			insertSucessfull = false;
 		}
 
