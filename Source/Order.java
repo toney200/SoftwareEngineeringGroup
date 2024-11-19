@@ -98,30 +98,10 @@ public class Order {
      * @throws Exception if the order is not in the yyyy/MM/dd format
      */
     public void setOrderDate(Date orderDate) throws Exception{
-        if(validateOrderDate(orderDate)){
-            this.orderDate = orderDate;
-        }
-        else throw new IllegalArgumentException("Invalid order date");
+        this.orderDate = orderDate;
     }
 
     public void setStartAgainDate(java.sql.Date startAgainDate) {
         this.startAgainDate = startAgainDate;
-    }
-
-    /**
-     * @return a Date object from a given String if it is in the correct format. Throws a ParseException when this is not
-     * the case
-     */
-    private boolean validateOrderDate(Date date) throws Exception {
-        try {
-            if(date instanceof Date) {
-            	return true;
-            }
-            else {
-            	return false;
-            }
-        } catch (Exception pe) {
-            return false;
-        }
     }
 }

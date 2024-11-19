@@ -156,7 +156,6 @@ public class MySQLConnector {
 	}
 	
 	/**
-	 * @todo Enable search for all publications and establish full functionality in Publication and CLI classes
 	 * @return List of publications
 	 */
 	public ArrayList<Publication> searchPublications() {

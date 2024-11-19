@@ -525,7 +525,7 @@ public class CLI {
 
 
     /**
-     * Directs the user to the desired functionality related to orders
+     * Directs the user to the desired functionality related to orders via user prompt.
      */
     private static void orderRouting(){
         int userSelect = 0;
@@ -576,8 +576,10 @@ public class CLI {
 
                 Order.createOrderInDB(order);
             }
+            catch(InputMismatchException ime){
+                System.out.println("Input error occurred. Please try again.");
+            }
             catch(Exception e){
-            	e.printStackTrace();
                 System.out.println("There was an issue creating this order. Please try again.");
             }
         }
@@ -636,7 +638,6 @@ public class CLI {
      * of the class to the MySQLConnector class to be passed to SQL database.
      */
     static void publicationCreation(Publication newPublication){
-        // @todo remove direct link from CLI to MySQLConnector
         try {
     		MySQLConnector sql = new MySQLConnector();
     		boolean validInput = false;
