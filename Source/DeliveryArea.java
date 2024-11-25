@@ -82,6 +82,29 @@ public class DeliveryArea {
         return sqlConnector.searchDeliveryAreas();
     }
 
+        public static boolean deleteDeliveryAreaByID(int id) {
+        if (sqlConnector == null) {
+            instantiateSQLInstance(); // Ensure SQL connection is active
+        }
+
+
+        // delete method
+        DeliveryArea deliveryArea = sqlConnector.searchDeliveryAreaByID(id);
+        if (deliveryArea != null) {
+            boolean isDeleted = sqlConnector.deleteDeliveryArea(deliveryArea); 
+            if (isDeleted) {
+                System.out.println("DeliveryArea with ID " + id + " was successfully deleted.");
+                return true;
+            } else {
+                System.err.println("Failed to delete DeliveryArea with ID " + id + "."); 
+                return false;
+            }
+        } else {
+            System.err.println("DeliveryArea with ID " + id + " not found."); 
+            return false;
+        }
+    }
+
     @Override
     public String toString() {
         return "DeliveryArea{" +

@@ -13,9 +13,10 @@ public class Customer {
     private int deliveryAreaID; // each customer falls within a delivery area defined by the user
     private int id;             // customer ID is a unique identifier that differentiates customers in the database
 
-    // The variables below inform the format of the eicode and phone numbers when being added by the User
+    // The variables below inform the format of the eicode, address and phone numbers when being added by the User
     private static final String EIRCODE_REGEX = "^[A-Za-z0-9]{3}[A-Za-z0-9]{4}$";
     private static final String PHONE_REGEX = "^08[3679][0-9]{7}$";
+    private static final String ADDRESS_REGEX = "^[A-Za-z0-9\s',.-]+$";
 
     private static MySQLConnector sqlConnector;
 
@@ -25,6 +26,18 @@ public class Customer {
         }
     }
 
+
+    /**
+     * Instantiates a static {@link MySQLConnector} if null and instantiates the member variables of the class representing
+     * a Customer record. It is only ever directly accessed by non-user-facing classes and interfaces.
+     * @param id Customer record primary key
+     * @param firstName Customer first name
+     * @param lastName Customer last name
+     * @param phoneNo Customer phone number
+     * @param address Customer address
+     * @param eircode Customer postal code
+     * @param deliveryAreaID Assigned Customer {@link DeliveryArea}
+     */
     public Customer(int id, String firstName, String lastName, String phoneNo, String address, String eircode, int deliveryAreaID){
         if(sqlConnector == null){
             instantiateSQLInstance();
@@ -47,11 +60,14 @@ public class Customer {
             sqlConnector = new MySQLConnector();
         }
         catch(Exception e){
-            System.err.println("Error occurred linking application to database. Ref Customer.instantiateSQLInstance() method.");
+            System.err.println("Unable to access database.");
         }
     }
 
-
+    /**
+     * Releases this Connection object's database and JDBC resources immediately instead of waiting for
+     * them to be automatically released.
+     */
     public static void closeSQLConnection(){
         if(sqlConnector != null){
             sqlConnector.closeDB();
@@ -68,6 +84,26 @@ public class Customer {
         return sqlConnector.insertCustomerDetails(customer);
     }
 
+
+    /**
+     * Deletes a Customer record from the MySQL database if it exists. Prints failure message if the record does not
+     * exist or if the MySQL {@link java.sql.Connection} fails.
+     * @param ID unique identifier of Customer record to be deleted
+     */
+    public static void deleteCustomerByID(int ID){
+        if (sqlConnector == null) {
+            instantiateSQLInstance();
+        }
+
+        if(sqlConnector.deleteCustomer(sqlConnector.searchCustomerByID(ID))){
+            System.out.println("Customer with ID " + ID + " was deleted.");
+        }
+        else {
+            System.err.println("Customer with ID " + ID + " was not deleted.");
+        }
+    }
+
+
     /**
      * @param firstname customer first name as entered by the user
      * @param lastname customer last name as entered by the user
@@ -81,8 +117,8 @@ public class Customer {
     }
 
     /**
-     * Takes a Customer object and updates the relevant table entry in the database
-     * @param customer
+     * Takes a Customer object and updates the mirrored record in the database.
+     * @param customer {@link Customer} record to be updated using the member variables in this object
      * @return the success/failure of the SQL update attempt
      */
     public static boolean updateCustomerInDB(Customer customer){
@@ -143,7 +179,7 @@ public class Customer {
     }
 
     public void setFirstName(String name) throws IllegalArgumentException{
-        if (validateFirstName(name) == true){
+        if (validateFirstName(name)){
             this.firstName = name;
         }
         else{
@@ -153,7 +189,7 @@ public class Customer {
 
 
     public void setLastName(String name) throws IllegalArgumentException{
-        if (validateLastName(name) == true){
+        if (validateLastName(name)){
             this.lastName = name;
         }
         else {
@@ -178,11 +214,19 @@ public class Customer {
     }
 
 
-    public void setAddress(String address){
-    	this.address = address;
+    public void setAddress(String address) throws IllegalArgumentException{
+    	if (validateAddress(address)) {
+            this.address = address;
+        }
+        else throw new IllegalArgumentException();
     }
 
 
+    /**
+     * Sets the eircode (postal code) member variable of a Customer instance.
+     * @param eircode Customer postal code
+     * @throws IllegalArgumentException
+     */
     public void setEircode(String eircode) throws IllegalArgumentException{
         if (validateEircode(eircode)){
             this.eircode = eircode;
@@ -239,13 +283,13 @@ public class Customer {
     }
 
     /**
-     * Checks if an entered address is within the character limits of 2 and 100 characters(inclusive). Returns true when string is
+     * Checks if an entered address is within the character limits of 10 and 100 characters(inclusive). Returns true when string is
      * within this boundary
      */
     protected boolean validateAddress(String address){
         if (address != null){
-            if(address.length() < 2 || address.length() > 100){
-                return false;
+            if(address.length() > 10 && address.length() <= 100){
+                return address.matches(ADDRESS_REGEX);
             }
         }
         return false;

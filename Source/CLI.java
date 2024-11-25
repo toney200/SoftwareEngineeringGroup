@@ -1,26 +1,43 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- * Contains all the necessary functionality to provide a command line interface to the user. Handles switching of user
- * interaction menus that link to functionality within external classes.
+ * Creates a command-line interface that utilises user prompts to facilitate access to the functionality of the
+ * {@link Customer}, {@link DeliveryArea}, {@link Order} and {@link Publication} classes.
  */
 public class CLI {
     static Scanner sc = new Scanner(System.in);
     static boolean wantsToClose = false;        // triggers the application to close when set to true via user input
-    
+
+    /**
+     * Constructs a new {@code CLI} instance, which serves as the main access point for interacting with
+     * the command-line interface (CLI) of the application. The constructor initializes the CLI and
+     * handles routing to various available interfaces based on user input. The user can select different
+     * actions by responding to prompts, and the constructor facilitates the navigation to
+     * those methods by calling internal routing functions.
+     *
+     * <p>If an unforeseen exception occurs during initialization or routing, this constructor will throw
+     * a generic {@link Exception}. This ensures that any unexpected issues that arise are communicated to
+     * the caller for further handling.
+     *
+     * <p>Note: This constructor does not directly execute user-selected methods, but rather passes control
+     * to other internal routing functions which then direct the flow to the corresponding method in the class.
+     *
+     * @throws Exception if an unexpected error occurs in the program
+     */
     CLI() throws Exception{
         while (!wantsToClose) {
             int userSelect = 0; // directs the constructor to call the relevant routing method based on what the user changes this value to
             boolean validInput = false; // informs the while loop below that prompts the user to direct the system to a selected variable
 
             System.out.println("Select from the following options:\n");
-            System.out.println("1. Customer Features    " +
-                    "2. Order Functions     " +
-                    "3. Publication Management    " +
-                    "4. Delivery Area Management    " +
-                    "5. Staff Management    " +
+            System.out.println("1. Customer Features\n" +
+                    "2. Order Functions\n" +
+                    "3. Publication Management\n" +
+                    "4. Delivery Area Management\n" +
+                    "5. Staff Management\n" +
                     "0. Close application");
             while (!validInput) {
                 try {
@@ -34,6 +51,9 @@ public class CLI {
                             validInput = true;
                             customerRouting();
                             break;
+                        case 2:
+                            validInput = true;
+                            orderRouting();
                         case 3:
                             validInput = true;
                             publicationRouting();
@@ -53,6 +73,8 @@ public class CLI {
         }
         Customer.closeSQLConnection();
         Publication.closeSQLConnector();
+        //DeliveryArea.closeSQLConnection();
+        Order.closeSQLConnection();
         System.exit(130);
     }
 
@@ -75,9 +97,10 @@ public class CLI {
                 validInput = true;
 
                 System.out.println("Select from the following options: \n");
-                System.out.println("1. Create a new customer    " +
-                        "2. Edit a customer profile     " +
-                        "3. View a customer profile     " +
+                System.out.println("1. Create a new customer\n" +
+                        "2. Edit a customer profile\n" +
+                        "3. View a customer profile\n" +
+                        "4. Delete a customer profile\n" +
                         "99. Exit to previous selection");
 
                 userSelect = sc.nextInt();
@@ -92,14 +115,19 @@ public class CLI {
                     case 3:
                         readCustomer();
                         break;
+                    case 4:
+                        deleteCustomer();
+                        break;
                     case 99:
                         return;
                     default:
+                        validInput = false;
                         break;
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Please enter a number from the aforementioned options!");
                 sc.nextLine();
+                validInput = false;
             }
         }
     }
@@ -147,6 +175,26 @@ public class CLI {
         catch(Exception e) {
         	System.out.println("Unable to connect to database. Please restart your application and try again.");
             e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Prompts the user for a numeric value representing the Customer ID that is then passed to the system to be
+     * deleted in the SQL database.
+     */
+    private static void deleteCustomer(){
+        int customerID;
+
+        System.out.println("Note: Deleting customers is permanent.");
+        System.out.println("Enter customer ID to delete. Press any alphabetic key to return to last screen: ");
+
+        try {
+            customerID = sc.nextInt();
+            Customer.deleteCustomerByID(customerID);
+        }
+        catch (InputMismatchException ime) {
+            return;
         }
     }
 
@@ -273,8 +321,6 @@ public class CLI {
 
 
 
-
-
 //  *** DELIVERY AREA METHODS ***
 
 
@@ -290,9 +336,10 @@ public class CLI {
             try {
 
                 System.out.println("Select from the following options: \n");
-                System.out.println("1. Create a new delivery area    " +
-                        "2. Edit a delivery area     " +
-                        "3. View an existing delivery area     " +
+                System.out.println("1. Create a new delivery area\n" +
+                        "2. Edit a delivery area\n" +
+                        "3. View an existing delivery area\n" +
+                        "4. Delete an existing delivery area\n" +
                         "99. Exit to previous selection");
 
                 userSelect = sc.nextInt();
@@ -309,6 +356,10 @@ public class CLI {
                         validInput = true;
                         readDeliveryArea();
                         return;
+                    case 4:
+                        validInput = true;
+                        deleteDeliveryArea();
+                        return;
                     case 99:
                         return;
                     default: // loops again
@@ -324,7 +375,7 @@ public class CLI {
 
 
     /**
-     * Creates an instance of the DeliveryArea class and populates its private member variables with user-defined values
+     * Creates an instance of the {@link DeliveryArea} class and populates its private member variables with user-defined values
      */
     static void createDeliveryArea(){
         DeliveryArea da = new DeliveryArea();
@@ -354,6 +405,27 @@ public class CLI {
 
 
     /**
+     * Prompts the user for an integer representing the ID of an entry in the database and passes it to {@link DeliveryArea}
+     * to be deleted.
+     */
+    private static void deleteDeliveryArea() {
+        System.out.println("Enter the ID of the delivery area to delete: ");
+        try {
+            int deliveryAreaID = sc.nextInt();
+            boolean success = DeliveryArea.deleteDeliveryAreaByID(deliveryAreaID);
+
+            if (success) {
+                System.out.println("Delivery area successfully deleted.");
+            } else {
+                System.out.println("Unable to delete delivery area. Please check the ID and try again.");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a valid numeric delivery area ID.");
+            sc.nextLine();
+        }
+    }
+
+    /**
      * Prints the associated delivery area according to user entered values.
      */
     private static void readDeliveryArea(){
@@ -376,7 +448,7 @@ public class CLI {
 
     /**
      *  Prompts the user to direct a search query for a specific DeliveryArea entity within the database. Uses the
-     *  attributes to populate a DeliveryArea object that may be edited and returned to the database.
+     *  attributes to populate a {@link DeliveryArea} object that may be edited and returned to the database.
      */
     private static void updateDeliveryArea() {
         DeliveryArea da = new DeliveryArea();
@@ -453,7 +525,7 @@ public class CLI {
 
 
     /**
-     * Directs the user to the desired functionality related to orders
+     * Directs the user to the desired functionality related to orders via user prompt.
      */
     private static void orderRouting(){
         int userSelect = 0;
@@ -461,15 +533,58 @@ public class CLI {
 
         while(!validInput) {
             System.out.println("Select from the following options: \n");
-            System.out.println("1. Create new order     " +
-                    "2. Place a scheduled order on hold     " +
+            System.out.println("1. Create new order\n" +
+                    "2. Place a scheduled order on hold\n" +
                     "99. Exit to previous selection");
 
             userSelect = sc.nextInt();
             switch (userSelect) {
-
+                case 1:
+                    createOrder();
+                    validInput = true;
+                    break;
+                case 2:
+                    break;
+                case 99:
+                    return;
             }
         }
+        return;
+    }
+
+
+    /**
+     * Prompts the user for a data to populate an instance of {@link Order} before creating an additional database
+     * entry with that data.
+     */
+    private static void createOrder(){
+        boolean validInput = false;
+        Order order = new Order();
+
+        while(!validInput) {
+            System.out.println("Please enter the order details below ");
+            try{
+            	long millis=System.currentTimeMillis();
+            	System.out.println(new java.sql.Date(millis));
+                order.setOrderDate(new java.sql.Date(millis));
+
+                System.out.println("Enter Publication ID: ");
+                order.setPublicationID(sc.nextInt());
+
+                System.out.println("Enter the associated customer ID: ");
+                order.setCustomerID(sc.nextInt());
+
+                Order.createOrderInDB(order);
+            }
+            catch(InputMismatchException ime){
+                System.out.println("Input error occurred. Please try again.");
+            }
+            catch(Exception e){
+                System.out.println("There was an issue creating this order. Please try again.");
+            }
+        }
+
+        return;
     }
 
 
@@ -485,9 +600,10 @@ public class CLI {
                 validInput = true;
 
                 System.out.println("Select from the following options: \n");
-                System.out.println("1. Create a new publication    " +
-                        "2. Find a publication         " +
-                		"3. Edit a publication         " +
+                System.out.println("1. Create a new publication\n" +
+                        "2. Find a publication\n" +
+                		"3. Edit a publication\n" +
+                        "4. Delete a publication\n" +
                         "99. Exit to previous selection");
 
                 userSelect = sc.nextInt();
@@ -502,6 +618,8 @@ public class CLI {
                     case 3:
                         updatePublication();
                         break;
+                    case 4:
+                        deletePublication();
                     case 99:
                         return;
                     default:
@@ -520,7 +638,6 @@ public class CLI {
      * of the class to the MySQLConnector class to be passed to SQL database.
      */
     static void publicationCreation(Publication newPublication){
-        // @todo remove direct link from CLI to MySQLConnector
         try {
     		MySQLConnector sql = new MySQLConnector();
     		boolean validInput = false;
@@ -561,6 +678,20 @@ public class CLI {
     	}
     	catch(Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+    private static void deletePublication(){
+        int publicationID;
+        System.out.println("Note: deleting stock items is permanent.");
+        try{
+            System.out.println("Enter publication ID to delete. Press any alphabetic key to return");
+            publicationID = sc.nextInt();
+            Publication.deletePublicationByID(publicationID);
+        }
+        catch (InputMismatchException ime){
+            return;
         }
     }
 
@@ -687,9 +818,10 @@ public class CLI {
 
         }
     }
-/**
-* Retrieve information for publications when title is entered.
-*/
+
+    /**
+    * Retrieve information for publications when title is entered.
+    */
     public static void retrievePublication() {
         ArrayList<Publication> publicationList;
         String pubName;
@@ -749,6 +881,5 @@ public class CLI {
             e.printStackTrace();
         }
     }
-
 }
 // END

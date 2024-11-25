@@ -39,6 +39,10 @@ public class Publication {
 		this.pubCost = pubCost;
 
 	}
+
+	public Publication(int pubID){
+		  this.pubID = pubID;
+	}
 	//Searches for publications within the database when a name is entered.
 	public static ArrayList<Publication> searchPublicationInDB(String pubName){
 		//Ensures SQL instance is initiated properly.
@@ -47,8 +51,25 @@ public class Publication {
 		return mySQLConnector.searchPublicationByName(pubName);
 	}
 
+	public static Publication searchPublicationInDB(int publicationID){
+		//Ensures SQL instance is initiated properly.
+		instantiateSQLInstance();
+		//Return search results
+		return mySQLConnector.searchPublicationByID(publicationID);
+	}
+
 	public static boolean updatePublicationInDB(Publication p){
 		return mySQLConnector.updatePublication(p);
+	}
+
+	public static void deletePublicationByID(int ID){
+		instantiateSQLInstance();
+		if(mySQLConnector.deletePublication(mySQLConnector.searchPublicationByID(ID))){
+			System.out.println("Publication with ID " + ID + " was deleted.");
+		}
+		else {
+			System.err.println("Publication with ID " + ID + " was not deleted.");
+		}
 	}
 	//Initializes instance of SQL connector if none is found
 	private static void instantiateSQLInstance() {
@@ -60,7 +81,7 @@ public class Publication {
 			System.err.println("Error occured linking application to database. Ref instantiateSQLInstance() method.");
 		}
 	}
-	
+
 	  //Getter and Setters
 	public int getPubID() {
 		return this.pubID;

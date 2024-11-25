@@ -1,5 +1,5 @@
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
 
 
 public class MySQLConnector {
@@ -71,9 +71,8 @@ public class MySQLConnector {
 	}
 
 	/**
-	 * @todo Enable search by ID and establish full functionality in Customer and CLI classes
-	 * @param customerID
-	 * @return
+	 * @param customerID the unique identifier for Customer entries in the database
+	 * @return a {@link Customer} object populated with data from the SQL database
 	 */
 	public Customer searchCustomerByID(int customerID) {
 		Customer foundCustomer = null;
@@ -95,7 +94,6 @@ public class MySQLConnector {
 	}
 	
 	/**
-	 * @todo Enable search for all customers and establish full functionality in Customer and CLI classes
 	 * @return List of customers
 	 */
 	public ArrayList<Customer> searchCustomers() {
@@ -117,7 +115,6 @@ public class MySQLConnector {
 	}
 	
 	/**
-	 * @todo Enable search for all delivery areas and establish full functionality in DeliveryArea and CLI classes
 	 * @return List of delivery areas
 	 */
 	public ArrayList<DeliveryArea> searchDeliveryAreas() {
@@ -159,7 +156,6 @@ public class MySQLConnector {
 	}
 	
 	/**
-	 * @todo Enable search for all publications and establish full functionality in Publication and CLI classes
 	 * @return List of publications
 	 */
 	public ArrayList<Publication> searchPublications() {
@@ -419,7 +415,7 @@ public class MySQLConnector {
     /**
      * Deletes an existing customer in the database
      * @param c - the customer to be deleted
-     * @return true or false depending on if the customer was successfuly deleted
+     * @return true or false depending on if the customer was successfully deleted
      */
     public boolean deleteCustomer(Customer c) {
         try{
@@ -440,7 +436,7 @@ public class MySQLConnector {
     /**
      * Deletes an existing delivery area in the database
      * @param da - the delivery area to be deleted
-     * @return true or false depending on if the delivery area was successfuly deleted
+     * @return true or false depending on if the delivery area was successfully deleted
      */
     public boolean deleteDeliveryArea(DeliveryArea da) {
         try{
@@ -461,7 +457,7 @@ public class MySQLConnector {
     /**
      * Deletes an existing publication in the database
      * @param p - the publication to be deleted
-     * @return true or false depending on if the publication was successfuly deleted
+     * @return true or false depending on if the publication was successfully deleted
      */
     public boolean deletePublication(Publication p) {
         try{
@@ -482,34 +478,34 @@ public class MySQLConnector {
     /**
      * Deletes an existing order in the database
      * @param o - the order to be deleted
-     * @return true or false depending on if the order was successfuly deleted
+     * @return true or false depending on if the order was successfully deleted
      */
     public boolean deleteOrder(Order o) {
     	return false;
     }
 
 	
-//	public boolean insertOrderDetails(Order p) {
-//		
-//		boolean insertSucessfull = true;
-//	
-//		try {
-//		
-//			//Create prepared statement to issue SQL query to the database
-//			preparedStatement = connect.prepareStatement("insert into orders values (default, ?, ?, ?, ?, ?)");
-//			preparedStatement.setInt(1, p.getID());
-//			preparedStatement.setDate(2, p.getDate());
-//			preparedStatement.setDate(3, p.getStartAgainDate());
-//			preparedStatement.setInt(4, p.getCustomerId());
-//			preparedStatement.setInt(5, p.getPublicationId());
-//			preparedStatement.executeUpdate();
-//		}
-//		catch (Exception e) {
-//			insertSucessfull = false;
-//		}
-//	
-//		return insertSucessfull;
-//	}
+	public boolean insertOrderDetails(Order p) {
+
+		boolean insertSucessfull = true;
+
+		try {
+
+			//Create prepared statement to issue SQL query to the database
+			preparedStatement = connect.prepareStatement("insert into orders values (default, ?, ?, ?, ?)");
+			preparedStatement.setDate(1, p.getOrderDate());
+			preparedStatement.setDate(2, p.getStartAgainDate());
+			preparedStatement.setInt(3, p.getCustomerID());
+			preparedStatement.setInt(4, p.getPublicationID());
+			preparedStatement.executeUpdate();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			insertSucessfull = false;
+		}
+
+		return insertSucessfull;
+	}
 
 	// public static void main(String[] args) {
 	// 	try {
