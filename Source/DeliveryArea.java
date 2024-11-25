@@ -29,6 +29,10 @@ public class DeliveryArea {
         return this.deliveryAreaID;
     }
 
+    public int setDeliveryAreaID() {
+        return this.deliveryAreaID;
+    }
+
     public String getDeliveryAreaName() {
         return this.deliveryAreaName;
     }
