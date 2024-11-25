@@ -481,7 +481,19 @@ public class MySQLConnector {
      * @return true or false depending on if the order was successfully deleted
      */
     public boolean deleteOrder(Order o) {
-    	return false;
+        try{
+            preparedStatement = connect.prepareStatement("Delete From orders Where orderID = ?");
+            preparedStatement.setInt(1, o.getOrderID());
+            int result = preparedStatement.executeUpdate();
+            if(result > 0) {
+            	return true;
+            } else {
+            	return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 	

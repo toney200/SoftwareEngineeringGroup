@@ -1,4 +1,5 @@
 import static org.junit.jupiter.api.Assertions.*;
+import  org.junit.jupiter.api.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -188,7 +189,7 @@ class SQLTest {
 	@Test
 	void searchCustomerByIDTrue() throws Exception {
 		MySQLConnector dbLink = new MySQLConnector();
-		assertTrue(dbLink.searchCustomerByID(1).getID() == 1);
+		assertTrue(dbLink.searchCustomerByID(3).getID() == 3);
 	}
 	
 	/*
@@ -240,7 +241,7 @@ class SQLTest {
 	@Test
 	void searchPublicationByIDTrue() throws Exception {
 		MySQLConnector dbLink = new MySQLConnector();
-		assertTrue(dbLink.searchPublicationByID(1).getPubID() == 1);
+		assertTrue(dbLink.searchPublicationByID(2).getPubID() == 2);
 	}
 	
 	/*
