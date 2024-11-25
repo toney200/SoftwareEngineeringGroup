@@ -6,15 +6,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import Publications.Publications.InvalidPublicationNameException;
-
 /**
  * 
  */
 class PublicationTest {
 
 	
-	Publications testObj = new Publications();
+	Publication testObj = new Publication();
 	
 	//PUBLICATION NAME TESTS
 	
@@ -144,7 +142,6 @@ class PublicationTest {
 		assertEquals(true, testObj.validatePublicationType("Newspaper"));
 		assertEquals(true, testObj.validatePublicationType("Magazine"));
 		assertEquals(true, testObj.validatePublicationType("Book"));
-		assertEquals(true, testObj.validatePublicationType("Once"));
 	}
 	
 	/*
@@ -247,6 +244,8 @@ class PublicationTest {
 		assertEquals(true, testObj.validatePublicationFrequency("Weekly"));
 		assertEquals(true, testObj.validatePublicationFrequency("Daily"));
 		assertEquals(true, testObj.validatePublicationFrequency("Monthly"));
+		assertEquals(true, testObj.validatePublicationFrequency("Once"));
+		
 	}
 	
 	/*

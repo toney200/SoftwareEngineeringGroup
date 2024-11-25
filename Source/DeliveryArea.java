@@ -40,7 +40,7 @@ public class DeliveryArea {
     }
 
     // Validation method for delivery area name
-    private boolean validateDeliveryAreaName(String deliveryAreaName) {
+    public boolean validateDeliveryAreaName(String deliveryAreaName) {
         return deliveryAreaName != null && deliveryAreaName.length() >= 2 && deliveryAreaName.length() <= 50;
     }
 

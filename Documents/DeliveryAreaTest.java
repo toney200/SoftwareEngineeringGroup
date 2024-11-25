@@ -8,24 +8,24 @@ public class DeliveryAreaTest {
 
     @BeforeEach
     public void setUp() {
-        deliveryArea = new DeliveryArea("Main Area"); 
+        deliveryArea = new DeliveryArea(); 
     }
 
     @Test
     public void testGetName() {
-        assertEquals("Main Area", deliveryArea.getName());
+        assertEquals("Main Area", deliveryArea.getDeliveryAreaName());
     }
 
     @Test
     public void testSetName() {
-        deliveryArea.setName("Updated Area");
-        assertEquals("Updated Area", deliveryArea.getName());
+        deliveryArea.setDeliveryAreaName("Updated Area");
+        assertEquals("Updated Area", deliveryArea.getDeliveryAreaName());
     }
 
     @Test
     public void testValidateName() {
-        assertTrue(deliveryArea.validateName("Valid Name"));
-        assertFalse(deliveryArea.validateName(""));
+        assertTrue(deliveryArea.validateDeliveryAreaName("Valid Name"));
+        assertFalse(deliveryArea.validateDeliveryAreaName(""));
     }
 
     @Test
